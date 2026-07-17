@@ -1,0 +1,50 @@
+                                           INTERNET
+                                               │
+                                               ▼
+                                     HTTPS / WebSocket
+                                               │
+                                               ▼
+┌────────────────────────────────────────────────────────────────────────────┐
+│                        Reverse Proxy (Nginx)                               │
+│                 TLS • Routing • Compression • Security                     │
+└──────────────────────────────┬─────────────────────────────────────────────┘
+                               │
+                               ▼
+┌────────────────────────────────────────────────────────────────────────────┐
+│                    Docker Host / VPS / Cloud                               │
+│                                                                            │
+│  ┌──────────────────────────────┐                                          │
+│  │ Frontend Container           │                                          │
+│  │ React / Next.js              │                                          │
+│  └──────────────┬───────────────┘                                          │
+│                 │                                                          │
+│  ┌──────────────▼───────────────┐                                          │
+│  │ Backend Container            │                                          │
+│  │ NestJS                       │                                          │
+│  │ Control Center               │                                          │
+│  │ Sentinel                     │                                          │
+│  │ Analyst                      │                                          │
+│  │ Probability Engine           │                                          │
+│  │ Risk Guardian                │                                          │
+│  │ Executor                     │                                          │
+│  │ Historian                    │                                          │
+│  │ Coach AI                     │                                          │
+│  │ Messenger                    │                                          │
+│  │ Automation Hub               │                                          │
+│  │ Extension Manager            │                                          │
+│  └──────────────┬───────────────┘                                          │
+│                 │                                                          │
+│     ┌───────────┼────────────┐                                             │
+│     ▼           ▼            ▼                                             │
+│ PostgreSQL    Redis      Local Storage                                     │
+│                                                                    │
+└────────────────────────────────────────────────────────────────────┼────────┘
+                                                                     │
+                                  ┌──────────────────────────────────┼─────────────────────────┐
+                                  ▼                                  ▼                         ▼
+                           TradingView API                     Deriv API                 MetaTrader 5
+                                  │                                  │                         │
+                                  └──────────────────────────────────┼─────────────────────────┘
+                                                                     ▼
+                                                              AI Providers
+                                                      (OpenAI • Ollama • autres)

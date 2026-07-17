@@ -1,0 +1,19 @@
+# PROJECT_STATE
+
+## Sprint actuel
+Sprint 0
+
+## Module en cours
+Sentinel
+
+## Dernière tâche terminée
+Architecture C4 validée.
+
+## Prochaine tâche
+Connexion WebSocket à l'API Deriv.
+
+## Blocages
+Aucun.
+
+## Baseline
+Architecture v1.2

@@ -1,0 +1,80 @@
+                                         BACKEND API (NestJS)
+
+┌────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                            │
+│                                API Gateway                                                 │
+│                         REST • WebSocket • Auth • Rate Limit                               │
+│                                                                                            │
+└──────────────────────────────┬─────────────────────────────────────────────────────────────┘
+                               │
+                               ▼
+┌────────────────────────────────────────────────────────────────────────────────────────────┐
+│                              Control Center                                                │
+│--------------------------------------------------------------------------------------------│
+│ Health Monitor │ Configuration │ User Manager │ Audit │ Monitoring │ System Settings       │
+└────────────────────────────────────────────────────────────────────────────────────────────┘
+                               │
+──────────────────────────────────────────────────────────────────────────────────────────────
+                               │
+                               ▼
+┌──────────────┐
+│  Sentinel    │
+├──────────────┤
+│ Market Feed  │
+│ Tick Stream  │
+│ Candle Sync  │
+│ Alert Intake │
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│   Analyst    │
+├──────────────┤
+│ Indicators   │
+│ Trend Engine │
+│ Pattern Scan │
+│ Context Eval │
+└──────┬───────┘
+       ▼
+┌────────────────────┐
+│Probability Engine  │
+├────────────────────┤
+│ Signal Ranking     │
+│ Score Calculator   │
+│ Decision Builder   │
+└────────┬───────────┘
+         ▼
+┌────────────────────┐
+│ Risk Guardian      │
+├────────────────────┤
+│ Risk Rules         │
+│ Capital Manager    │
+│ Exposure Control   │
+│ Daily Limits       │
+└────────┬───────────┘
+         ▼
+┌────────────────────┐
+│ Executor           │
+├────────────────────┤
+│ Broker Adapter     │
+│ Order Manager      │
+│ Position Tracker   │
+└────────┬───────────┘
+         ▼
+┌────────────────────┐
+│ Historian          │
+├────────────────────┤
+│ Trade Journal      │
+│ Metrics            │
+│ Statistics         │
+│ Replay Engine      │
+└────────┬───────────┘
+         ▼
+┌────────────────────┐
+│ Coach AI           │
+├────────────────────┤
+│ Explain Decisions  │
+│ Recommendations    │
+│ Learning Support   │
+└────────────────────┘
+
+Messenger • Automation Hub • Extension Manager

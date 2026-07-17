@@ -1,0 +1,356 @@
+# TSP-JULES
+
+# RFC-007 — System Architecture Document (SAD)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le System Architecture Document (SAD) définit l'architecture logicielle officielle de TSP-JULES.
+
+Il décrit les composants, leurs responsabilités, leurs interactions et les principes d'ingénierie qui gouvernent l'ensemble de la plateforme.
+
+---
+
+# 2. Vision Architecturale
+
+TSP-JULES est conçu comme une plateforme modulaire, distribuée et évolutive.
+
+Chaque composant possède une responsabilité unique et communique avec les autres via des interfaces clairement définies.
+
+L'architecture est orientée événements (Event-Driven Architecture) afin de favoriser le découplage, la scalabilité et la traçabilité.
+
+---
+
+# 3. Principes d'Architecture
+
+* Responsabilité unique (Single Responsibility Principle)
+* Faible couplage
+* Forte cohésion
+* Modularité
+* Évolutivité
+* Traçabilité
+* Testabilité
+* Sécurité par conception (Security by Design)
+* Observabilité native
+
+---
+
+# 4. Vue d'Ensemble
+
+L'architecture est organisée en huit couches.
+
+1. Présentation (Dashboard & API)
+2. Orchestration
+3. Intelligence
+4. Gestion du Risque
+5. Exécution
+6. Données
+7. Infrastructure
+8. Services externes
+
+---
+
+# 5. Les Composants Principaux
+
+## API Gateway
+
+Point d'entrée unique de la plateforme.
+
+Responsabilités :
+
+* Authentification
+* Autorisation
+* Routage
+* Limitation de débit
+* Journalisation des requêtes
+
+---
+
+## Sentinel
+
+Collecte des données de marché.
+
+Responsabilités :
+
+* Flux TradingView
+* Flux Deriv
+* Flux MT5
+* Webhooks
+* Synchronisation des données
+
+---
+
+## Analyst
+
+Analyse le contexte du marché.
+
+Responsabilités :
+
+* Structure
+* Tendance
+* Volatilité
+* Momentum
+* Liquidité
+
+---
+
+## Strategy Engine
+
+Construit les scénarios de trading.
+
+Responsabilités :
+
+* Détection des opportunités
+* Sélection des stratégies compatibles
+* Validation des hypothèses
+
+---
+
+## Probability Engine
+
+Calcule les probabilités.
+
+Responsabilités :
+
+* Évaluation des scénarios
+* Pondération des preuves
+* Calcul de la confiance
+
+---
+
+## Risk Guardian
+
+Autorité souveraine du système.
+
+Responsabilités :
+
+* Budget de risque
+* Position sizing
+* Drawdown
+* Exposition
+* Kill Switch
+* Autorisation finale
+
+---
+
+## Executor
+
+Exécute les décisions approuvées.
+
+Responsabilités :
+
+* Ouverture
+* Modification
+* Fermeture
+* Suivi des positions
+
+---
+
+## Historian
+
+Enregistre toutes les données et décisions.
+
+Responsabilités :
+
+* Journal des décisions
+* Historique des trades
+* Historique des événements
+* Audit
+
+---
+
+## Coach
+
+Analyse les performances.
+
+Responsabilités :
+
+* Statistiques
+* Rapports
+* Suggestions d'amélioration
+* Détection de dérive
+
+---
+
+# 6. Flux Principal
+
+```text
+Marché
+   │
+   ▼
+Sentinel
+   │
+   ▼
+Analyst
+   │
+   ▼
+Strategy Engine
+   │
+   ▼
+Probability Engine
+   │
+   ▼
+Risk Guardian
+   │
+   ▼
+Executor
+   │
+   ▼
+Historian
+   │
+   ▼
+Coach
+```
+
+---
+
+# 7. Architecture Événementielle
+
+Les composants échangent des événements.
+
+Exemples :
+
+* MarketDataReceived
+* ContextUpdated
+* ScenarioDetected
+* ProbabilityCalculated
+* RiskApproved
+* RiskRejected
+* OrderExecuted
+* PositionClosed
+* TradeCompleted
+* LearningUpdated
+
+Tous les événements sont horodatés et persistés.
+
+---
+
+# 8. Architecture des Services
+
+Chaque moteur est implémenté comme un service indépendant.
+
+Les services peuvent évoluer ou être remplacés sans affecter les autres composants.
+
+---
+
+# 9. Stockage
+
+La plateforme distingue plusieurs catégories de données :
+
+* Configuration
+* Données de marché
+* Journal des événements
+* Décisions
+* Trades
+* Statistiques
+* Paramètres d'apprentissage
+
+Chaque catégorie possède sa propre stratégie de stockage.
+
+---
+
+# 10. Sécurité
+
+Les principes suivants sont obligatoires :
+
+* Authentification forte
+* Gestion centralisée des secrets
+* Chiffrement des données sensibles
+* Journalisation des accès
+* Contrôle des permissions
+* Audit complet
+
+---
+
+# 11. Observabilité
+
+La plateforme doit être observable à tout moment.
+
+Mécanismes :
+
+* Logs structurés
+* Métriques
+* Traces
+* Alertes
+* Tableau de supervision
+
+---
+
+# 12. Tolérance aux Pannes
+
+Le système doit être résilient.
+
+En cas d'incident :
+
+* Isolation du composant concerné
+* Journalisation
+* Notification
+* Procédure de reprise
+* Vérification d'intégrité
+
+---
+
+# 13. Déploiement
+
+L'architecture doit permettre :
+
+* Développement local
+* Tests
+* Préproduction
+* Production
+
+Les environnements doivent être reproductibles grâce à la conteneurisation.
+
+---
+
+# 14. Scalabilité
+
+La plateforme doit pouvoir évoluer horizontalement.
+
+Chaque service peut être répliqué indépendamment.
+
+L'ajout de nouveaux courtiers, marchés ou moteurs ne doit pas nécessiter une refonte globale.
+
+---
+
+# 15. Gouvernance
+
+Toute évolution architecturale doit respecter :
+
+* l'Engineering Constitution ;
+* le TMO ;
+* le TDF ;
+* le TRF.
+
+Toute dérogation doit être documentée, justifiée et approuvée.
+
+---
+
+# 16. Évolutivité
+
+L'architecture est conçue pour accueillir :
+
+* de nouveaux courtiers ;
+* de nouvelles stratégies ;
+* de nouveaux modèles d'IA ;
+* de nouveaux moteurs probabilistes ;
+* de nouveaux tableaux de bord.
+
+Sans remettre en cause les fondations du système.
+
+---
+
+# 17. Conclusion
+
+Le System Architecture Document constitue le plan directeur de TSP-JULES.
+
+Il transforme les principes métier définis dans les RFC précédentes en une architecture logicielle cohérente, modulaire et durable.
+
+Chaque composant doit contribuer à une plateforme capable d'observer, de comprendre, de décider, de protéger et d'apprendre dans un environnement financier complexe.

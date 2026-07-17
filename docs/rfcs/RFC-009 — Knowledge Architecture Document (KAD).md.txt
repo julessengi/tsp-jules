@@ -1,0 +1,304 @@
+# TSP-JULES
+
+# RFC-009 — Knowledge Architecture Document (KAD)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Knowledge Architecture Document (KAD) définit la manière dont TSP-JULES représente, organise, exploite et enrichit ses connaissances.
+
+Il décrit les mécanismes permettant au système de transformer les données en information, l'information en connaissance, puis la connaissance en intelligence décisionnelle.
+
+---
+
+# 2. Mission
+
+Construire une mémoire structurée permettant à TSP-JULES d'améliorer progressivement la qualité de ses décisions.
+
+Le système ne doit pas seulement enregistrer des événements.
+
+Il doit apprendre d'eux.
+
+---
+
+# 3. Les Niveaux de Connaissance
+
+Les connaissances sont organisées selon cinq niveaux.
+
+## Niveau 1 — Données
+
+Faits bruts observés.
+
+Exemples :
+
+* prix ;
+* ticks ;
+* bougies ;
+* indicateurs ;
+* événements.
+
+---
+
+## Niveau 2 — Informations
+
+Les données sont organisées et contextualisées.
+
+Exemples :
+
+* tendance haussière ;
+* volatilité élevée ;
+* cassure confirmée.
+
+---
+
+## Niveau 3 — Connaissances
+
+Les informations permettent de produire des règles.
+
+Exemples :
+
+* une cassure accompagnée d'un momentum fort augmente la probabilité de continuation ;
+* une volatilité faible favorise les phases de consolidation.
+
+---
+
+## Niveau 4 — Expérience
+
+Le système mesure les résultats des connaissances appliquées.
+
+Chaque expérience contient :
+
+* le contexte ;
+* la décision ;
+* le résultat ;
+* les enseignements.
+
+---
+
+## Niveau 5 — Intelligence
+
+Les expériences permettent d'améliorer les décisions futures.
+
+Les règles peuvent être ajustées sur la base de preuves mesurables.
+
+---
+
+# 4. Les Sources de Connaissance
+
+La plateforme construit sa connaissance à partir de plusieurs sources.
+
+* Observations du marché.
+* Résultats des stratégies.
+* Historique des décisions.
+* Historique des risques.
+* Backtests.
+* Simulations.
+* Interventions humaines validées.
+* Modèles statistiques.
+* Modèles d'intelligence artificielle.
+
+Chaque source est identifiée et versionnée.
+
+---
+
+# 5. Les Objets de Connaissance
+
+Le patrimoine de connaissance comprend notamment :
+
+* Concepts
+* Définitions
+* Hypothèses
+* Règles
+* Modèles
+* Stratégies
+* Patterns
+* Corrélations
+* Expériences
+* Leçons apprises
+* Recommandations
+* Bonnes pratiques
+
+---
+
+# 6. Graphe de Connaissances
+
+Les connaissances sont représentées sous forme de graphe.
+
+Exemple simplifié :
+
+```text
+Cassure
+    │
+    ├── influence → Momentum
+    │
+    ├── dépend de → Structure
+    │
+    ├── augmente → Probabilité
+    │
+    └── validée par → Volume (si disponible)
+```
+
+Chaque relation possède :
+
+* une direction ;
+* une justification ;
+* un niveau de confiance ;
+* une date de création.
+
+---
+
+# 7. Cycle d'Apprentissage
+
+Toute nouvelle expérience suit le cycle suivant :
+
+Observation
+
+↓
+
+Analyse
+
+↓
+
+Hypothèse
+
+↓
+
+Expérimentation
+
+↓
+
+Validation
+
+↓
+
+Capitalisation
+
+↓
+
+Réutilisation
+
+↓
+
+Amélioration
+
+Aucune règle ne peut être modifiée sans validation.
+
+---
+
+# 8. Validation des Connaissances
+
+Une connaissance doit satisfaire plusieurs critères :
+
+* cohérence ;
+* reproductibilité ;
+* traçabilité ;
+* compatibilité avec le TMO ;
+* compatibilité avec le TDF ;
+* compatibilité avec le TRF.
+
+Une hypothèse non validée ne devient jamais une connaissance officielle.
+
+---
+
+# 9. Gestion des Versions
+
+Chaque élément de connaissance possède :
+
+* un identifiant ;
+* une version ;
+* un auteur (humain ou moteur) ;
+* une date de création ;
+* une date de révision ;
+* un statut.
+
+Statuts possibles :
+
+* Draft
+* Proposed
+* Validated
+* Deprecated
+* Archived
+
+---
+
+# 10. Mémoire de Décision
+
+Chaque décision alimente une mémoire contenant :
+
+* le contexte ;
+* la stratégie utilisée ;
+* la probabilité estimée ;
+* le risque accepté ;
+* le résultat obtenu ;
+* les écarts observés.
+
+Cette mémoire permet d'améliorer les futures évaluations.
+
+---
+
+# 11. Moteur d'Amélioration Continue
+
+Le moteur d'amélioration peut :
+
+* détecter des dérives ;
+* identifier des règles peu performantes ;
+* proposer des ajustements ;
+* recommander des expérimentations.
+
+Il ne modifie jamais les règles de production sans validation.
+
+---
+
+# 12. Gouvernance de la Connaissance
+
+Toute nouvelle connaissance doit être :
+
+* documentée ;
+* justifiée ;
+* testée ;
+* approuvée ;
+* versionnée.
+
+Les connaissances obsolètes restent archivées afin de préserver l'historique.
+
+---
+
+# 13. Compatibilité
+
+Le KAD dépend :
+
+* du TMO ;
+* du TDF ;
+* du TRF ;
+* du DAD.
+
+Il reste indépendant des technologies d'implémentation.
+
+---
+
+# 14. Vision Long Terme
+
+L'architecture de connaissance doit permettre :
+
+* l'intégration de nouveaux modèles d'IA ;
+* la comparaison de plusieurs stratégies ;
+* l'explication des décisions ;
+* la création de recommandations personnalisées ;
+* l'amélioration continue des performances.
+
+---
+
+# 15. Conclusion
+
+Le Knowledge Architecture Document constitue la mémoire vivante de TSP-JULES.
+
+Il transforme les données en connaissances exploitables, les expériences en apprentissages et les apprentissages en décisions plus robustes.
+
+Grâce au KAD, TSP-JULES ne se contente pas d'exécuter des stratégies : il construit progressivement une intelligence décisionnelle fondée sur l'observation, la preuve et l'amélioration continue.

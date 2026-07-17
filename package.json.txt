@@ -1,0 +1,23 @@
+{
+  "name": "tsp-jules",
+  "private": true,
+  "version": "0.1.0-alpha",
+  "description": "Trading Smart Platform - AI Powered Trading Ecosystem",
+  "license": "MIT",
+  "packageManager": "pnpm@11.13.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "test": "turbo test",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.10.5",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,525 @@
+# TSP-JULES
+
+# RFC-011 — Event Catalog
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Event Catalog définit l'ensemble des événements métier utilisés par TSP-JULES.
+
+Il décrit :
+
+* les événements produits ;
+* les événements consommés ;
+* leurs structures ;
+* leurs responsabilités ;
+* leurs relations avec les domaines DDD.
+
+---
+
+# 2. Mission
+
+Créer un système de communication fiable entre les différents moteurs de TSP-JULES.
+
+Chaque événement doit permettre au système de savoir :
+
+* ce qui s'est passé ;
+* quand cela s'est produit ;
+* dans quel contexte ;
+* quelle action peut être envisagée.
+
+---
+
+# 3. Principes
+
+Un événement :
+
+* représente un fait passé ;
+* est immuable ;
+* possède un identifiant unique ;
+* possède une date UTC ;
+* possède une source ;
+* peut être rejoué ;
+* doit être traçable.
+
+---
+
+# 4. Format Général d'un Événement
+
+Structure standard :
+
+```json
+{
+  "eventId": "uuid",
+  "eventType": "MarketObserved",
+  "timestamp": "UTC",
+  "source": "Sentinel",
+  "version": "1.0",
+  "payload": {}
+}
+```
+
+---
+
+# 5. Catégories d'Événements
+
+Les événements sont organisés en sept familles :
+
+1. Market Events
+2. Analysis Events
+3. Strategy Events
+4. Decision Events
+5. Risk Events
+6. Execution Events
+7. Learning Events
+
+---
+
+# 6. Market Events
+
+## MarketDataReceived
+
+Producteur :
+
+Sentinel
+
+Description :
+
+Nouvelle donnée reçue du marché.
+
+Payload :
+
+* instrument
+* timeframe
+* price
+* timestamp
+
+---
+
+## CandleClosed
+
+Description :
+
+Une bougie est clôturée.
+
+Payload :
+
+* open
+* high
+* low
+* close
+* volume
+* timeframe
+
+---
+
+## MarketStateChanged
+
+Description :
+
+Le marché change d'état.
+
+Exemples :
+
+* consolidation
+* expansion
+* tendance
+* retournement
+
+---
+
+## VolatilityChanged
+
+Description :
+
+Modification significative de la volatilité.
+
+---
+
+# 7. Analysis Events
+
+## ContextCreated
+
+Producteur :
+
+Analyst
+
+Description :
+
+Un contexte de marché est créé.
+
+Contient :
+
+* tendance
+* structure
+* momentum
+* volatilité
+
+---
+
+## StructureDetected
+
+Description :
+
+Une structure de marché est identifiée.
+
+Exemples :
+
+* breakout
+* range
+* reversal
+
+---
+
+## MomentumDetected
+
+Description :
+
+Une condition de momentum est détectée.
+
+---
+
+## LiquidityZoneDetected
+
+Description :
+
+Une zone de liquidité potentielle est identifiée.
+
+---
+
+# 8. Strategy Events
+
+## ScenarioCreated
+
+Producteur :
+
+Strategy Engine
+
+Description :
+
+Un scénario de trading est créé.
+
+Payload :
+
+* stratégie
+* hypothèse
+* conditions
+
+---
+
+## ScenarioValidated
+
+Description :
+
+Les conditions d'un scénario sont validées.
+
+---
+
+## ScenarioRejected
+
+Description :
+
+Un scénario est invalidé.
+
+---
+
+# 9. Decision Events
+
+## EvidenceCollected
+
+Producteur :
+
+Probability Engine
+
+Description :
+
+Une preuve est ajoutée à une hypothèse.
+
+---
+
+## ProbabilityCalculated
+
+Description :
+
+Une probabilité est calculée.
+
+Payload :
+
+* scénario
+* score
+* confiance
+
+---
+
+## DecisionCreated
+
+Description :
+
+Une décision est produite.
+
+Valeurs possibles :
+
+* BUY
+* SELL
+* WAIT
+* REJECT
+
+---
+
+## DecisionApproved
+
+Description :
+
+Décision acceptée par le système.
+
+---
+
+# 10. Risk Events
+
+## RiskAssessmentStarted
+
+Description :
+
+Une analyse du risque commence.
+
+---
+
+## RiskApproved
+
+Producteur :
+
+Risk Guardian
+
+Description :
+
+Le risque est accepté.
+
+---
+
+## RiskRejected
+
+Description :
+
+Le risque est refusé.
+
+---
+
+## DrawdownLimitReached
+
+Description :
+
+Une limite de perte est atteinte.
+
+---
+
+## TradingSuspended
+
+Description :
+
+Le système bloque les nouvelles opérations.
+
+---
+
+## TradingResumed
+
+Description :
+
+Le système reprend son activité.
+
+---
+
+# 11. Execution Events
+
+## OrderCreated
+
+Description :
+
+Un ordre est créé.
+
+---
+
+## OrderExecuted
+
+Description :
+
+Un ordre est exécuté.
+
+---
+
+## PositionOpened
+
+Description :
+
+Une position est ouverte.
+
+---
+
+## PositionClosed
+
+Description :
+
+Une position est fermée.
+
+---
+
+## TradeCompleted
+
+Description :
+
+Un trade arrive à son état final.
+
+Payload :
+
+* résultat
+* gain/perte
+* durée
+* analyse
+
+---
+
+# 12. Learning Events
+
+## ExperienceRecorded
+
+Description :
+
+Une expérience de trading est enregistrée.
+
+---
+
+## PatternDiscovered
+
+Description :
+
+Un nouveau comportement récurrent est identifié.
+
+---
+
+## KnowledgeUpdated
+
+Description :
+
+Une connaissance est ajoutée ou modifiée.
+
+---
+
+## ModelImproved
+
+Description :
+
+Un modèle est amélioré.
+
+---
+
+# 13. Relations avec les Bounded Contexts
+
+```text
+Sentinel
+   |
+   | Market Events
+   ▼
+Analyst
+   |
+   | Analysis Events
+   ▼
+Strategy Engine
+   |
+   | Strategy Events
+   ▼
+Probability Engine
+   |
+   | Decision Events
+   ▼
+Risk Guardian
+   |
+   | Risk Events
+   ▼
+Executor
+   |
+   | Execution Events
+   ▼
+Historian / Coach
+   |
+   | Learning Events
+```
+
+---
+
+# 14. Event Store
+
+Tous les événements importants sont conservés.
+
+Objectifs :
+
+* audit ;
+* reconstruction historique ;
+* analyse ;
+* apprentissage ;
+* simulation.
+
+---
+
+# 15. Versionnement
+
+Chaque événement possède une version.
+
+Exemple :
+
+MarketObserved.v1
+
+MarketObserved.v2
+
+Les anciennes versions restent compatibles.
+
+---
+
+# 16. Gestion des Erreurs
+
+Les événements d'erreur sont également enregistrés.
+
+Exemples :
+
+* DataFeedUnavailable
+* BrokerConnectionLost
+* ExecutionFailed
+* InvalidDataDetected
+
+---
+
+# 17. Sécurité
+
+Les événements doivent respecter :
+
+* authentification de la source ;
+* validation du schéma ;
+* contrôle d'accès ;
+* journalisation.
+
+---
+
+# 18. Gouvernance
+
+La création d'un nouvel événement nécessite :
+
+* justification métier ;
+* appartenance à un domaine ;
+* définition du payload ;
+* versionnement ;
+* documentation.
+
+---
+
+# 19. Conclusion
+
+Le Event Catalog constitue le système nerveux de TSP-JULES.
+
+Il permet aux différents composants de communiquer avec un langage commun, fiable et traçable.
+
+Grâce aux événements, TSP-JULES devient une architecture capable d'observer, raisonner, décider et apprendre sans dépendance forte entre ses composants.

@@ -1,0 +1,296 @@
+# TSP-JULES
+
+# RFC-006 — Trading Risk Framework (TRF)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Trading Risk Framework (TRF) définit les principes, les règles, les limites et les mécanismes de gestion du risque de TSP-JULES.
+
+Son objectif est de garantir que la protection du capital reste prioritaire sur la recherche de performance.
+
+Le TRF constitue l'autorité finale en matière de gestion du risque.
+
+---
+
+# 2. Mission
+
+Le TRF assure que toute décision d'investissement respecte un niveau de risque acceptable, mesurable et contrôlé.
+
+Le système doit survivre à une série de pertes afin de pouvoir profiter des opportunités futures.
+
+---
+
+# 3. Principe Fondamental
+
+> **La survie du capital est la première condition de toute performance durable.**
+
+Le profit est une conséquence.
+
+Le risque est une décision.
+
+---
+
+# 4. Les Principes Directeurs
+
+* Le risque est défini avant l'ouverture d'une position.
+* Le risque est limité.
+* Le risque est mesuré.
+* Le risque est enregistré.
+* Le risque est réévalué en permanence.
+* Toute décision est soumise au Risk Guardian.
+
+---
+
+# 5. Le Budget de Risque
+
+Le risque est traité comme un budget.
+
+Chaque trade consomme une partie de ce budget.
+
+Le budget est défini à plusieurs niveaux :
+
+* par position ;
+* par actif ;
+* par stratégie ;
+* par session ;
+* par journée ;
+* par semaine ;
+* par mois ;
+* global.
+
+Le dépassement d'un budget entraîne une suspension automatique des nouvelles exécutions.
+
+---
+
+# 6. Les Niveaux de Risque
+
+## Niveau 1 — Trade
+
+Évalue le risque d'une seule position.
+
+---
+
+## Niveau 2 — Session
+
+Contrôle l'ensemble des positions ouvertes pendant une session de trading.
+
+---
+
+## Niveau 3 — Journalier
+
+Surveille les pertes et gains de la journée.
+
+---
+
+## Niveau 4 — Hebdomadaire
+
+Contrôle les performances de la semaine.
+
+---
+
+## Niveau 5 — Mensuel
+
+Mesure la stabilité globale du système.
+
+---
+
+## Niveau 6 — Portefeuille
+
+Contrôle l'exposition totale du capital.
+
+---
+
+# 7. Position Sizing
+
+Le calcul de la taille des positions dépend notamment :
+
+* du capital disponible ;
+* du budget de risque ;
+* de la volatilité ;
+* du scénario retenu ;
+* de la probabilité estimée.
+
+Le Position Sizing doit être déterministe et reproductible.
+
+---
+
+# 8. Exposition
+
+Le Risk Guardian contrôle notamment :
+
+* l'exposition par actif ;
+* l'exposition par stratégie ;
+* l'exposition par direction (achat/vente) ;
+* l'exposition totale.
+
+Aucune concentration excessive n'est autorisée.
+
+---
+
+# 9. Drawdown
+
+Le système suit plusieurs indicateurs de drawdown :
+
+* drawdown courant ;
+* drawdown maximal ;
+* drawdown journalier ;
+* drawdown hebdomadaire ;
+* drawdown mensuel.
+
+Chaque seuil possède une politique de réaction.
+
+---
+
+# 10. Kill Switch
+
+Le Kill Switch est un mécanisme de protection d'urgence.
+
+Il suspend immédiatement toute nouvelle exécution lorsqu'un événement critique est détecté.
+
+Exemples :
+
+* dépassement du drawdown maximal ;
+* perte de connexion aux données ;
+* anomalie des prix ;
+* comportement incohérent d'un module ;
+* indisponibilité du courtier.
+
+---
+
+# 11. États du Risk Guardian
+
+Le moteur de risque peut se trouver dans les états suivants :
+
+* NORMAL
+* WARNING
+* RESTRICTED
+* LOCKED
+* RECOVERY
+
+Chaque changement d'état est historisé.
+
+---
+
+# 12. Politique de Décision
+
+Le Risk Guardian reçoit une proposition du Probability Engine.
+
+Il répond uniquement par :
+
+* APPROVED
+* REJECTED
+* SUSPENDED
+
+Sa décision est prioritaire sur tous les autres modules.
+
+---
+
+# 13. Suspension
+
+Une suspension peut être déclenchée automatiquement ou manuellement.
+
+Pendant une suspension :
+
+* aucune nouvelle position n'est ouverte ;
+* les positions existantes restent gérées selon leur stratégie ;
+* toutes les décisions sont journalisées.
+
+---
+
+# 14. Reprise
+
+Une reprise d'activité nécessite :
+
+* la disparition de la cause de suspension ;
+* une nouvelle évaluation du risque ;
+* une validation par le Risk Guardian.
+
+---
+
+# 15. Journalisation
+
+Chaque décision de risque enregistre :
+
+* identifiant unique ;
+* date et heure ;
+* actif concerné ;
+* scénario ;
+* probabilité ;
+* budget disponible ;
+* budget consommé ;
+* niveau de risque ;
+* décision finale ;
+* justification.
+
+Toutes les décisions doivent être traçables.
+
+---
+
+# 16. Audit
+
+Le TRF est conçu pour permettre un audit complet.
+
+Toute décision doit répondre aux questions suivantes :
+
+* Pourquoi ce risque a-t-il été accepté ?
+* Pourquoi a-t-il été refusé ?
+* Quel budget était disponible ?
+* Quelle règle a été appliquée ?
+* Quel événement a déclenché la décision ?
+
+---
+
+# 17. Compatibilité
+
+Le TRF dépend :
+
+* du TMO ;
+* du TDF.
+
+Il est indépendant :
+
+* des courtiers ;
+* des langages ;
+* des plateformes.
+
+---
+
+# 18. Évolutivité
+
+Le TRF permet l'ajout de nouvelles règles de risque, de nouveaux modèles de position sizing et de nouveaux mécanismes de protection sans remettre en cause son architecture.
+
+Toute évolution doit préserver :
+
+* la traçabilité ;
+* la reproductibilité ;
+* l'explicabilité.
+
+---
+
+# 19. Gouvernance
+
+Le Risk Guardian est l'autorité souveraine de TSP-JULES.
+
+Aucun module ne peut contourner une décision du Risk Guardian.
+
+Toute tentative de contournement constitue une violation de l'Engineering Constitution.
+
+---
+
+# 20. Conclusion
+
+Le Trading Risk Framework constitue le système immunitaire de TSP-JULES.
+
+Il ne cherche pas à maximiser le rendement.
+
+Il garantit que chaque opportunité est évaluée dans les limites d'un risque maîtrisé.
+
+Son objectif ultime est d'assurer la pérennité du capital, condition indispensable à toute stratégie de trading durable.

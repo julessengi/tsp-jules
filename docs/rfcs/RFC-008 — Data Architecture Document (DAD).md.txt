@@ -1,0 +1,406 @@
+# TSP-JULES
+
+# RFC-008 — Data Architecture Document (DAD)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Data Architecture Document (DAD) définit l'organisation officielle des données de TSP-JULES.
+
+Il établit les modèles de données, les relations, les flux, les règles de conservation et les principes garantissant l'intégrité, la traçabilité et l'évolutivité des informations manipulées par la plateforme.
+
+---
+
+# 2. Mission
+
+Permettre à TSP-JULES de conserver, exploiter et enrichir les données nécessaires à l'observation, au raisonnement, à la prise de décision, à la gestion du risque et à l'apprentissage.
+
+---
+
+# 3. Principes
+
+Les données sont un actif stratégique.
+
+Aucune donnée métier importante ne doit être perdue.
+
+Toute décision doit être reconstruisible.
+
+Chaque donnée possède :
+
+* une origine ;
+* un propriétaire ;
+* un cycle de vie ;
+* une politique de conservation.
+
+---
+
+# 4. Domaines de Données
+
+Le patrimoine informationnel est organisé en neuf domaines.
+
+## 1. Référentiel
+
+Contient les données relativement stables.
+
+Exemples :
+
+* Utilisateurs
+* Comptes
+* Courtiers
+* Actifs
+* Marchés
+* Timeframes
+* Stratégies
+* Paramètres
+
+---
+
+## 2. Données de Marché
+
+Informations collectées en temps réel.
+
+Exemples :
+
+* Bougies (OHLC)
+* Ticks
+* Volume (si disponible)
+* Volatilité
+* Spread
+* Horodatage
+
+---
+
+## 3. Observations
+
+Résultats produits par le Sentinel.
+
+Exemples :
+
+* Cassure détectée
+* Compression
+* Expansion
+* Changement de tendance
+
+---
+
+## 4. Analyses
+
+Résultats du moteur Analyst.
+
+Exemples :
+
+* Structure
+* Contexte
+* Momentum
+* Liquidité
+* Volatilité
+
+---
+
+## 5. Décisions
+
+Produites par le TDF.
+
+Exemples :
+
+* BUY
+* SELL
+* WAIT
+* REJECT
+
+Chaque décision est versionnée.
+
+---
+
+## 6. Risque
+
+Informations du Risk Guardian.
+
+Exemples :
+
+* Budget de risque
+* Exposition
+* Position sizing
+* Drawdown
+* État du Risk Guardian
+
+---
+
+## 7. Exécution
+
+Informations provenant du courtier.
+
+Exemples :
+
+* Ordres
+* Positions
+* Trades
+* Fermetures
+* Erreurs
+
+---
+
+## 8. Historique
+
+Archive de toutes les activités.
+
+Exemples :
+
+* Journaux
+* Événements
+* Audits
+* Rapports
+
+---
+
+## 9. Connaissance
+
+Résultats de l'apprentissage.
+
+Exemples :
+
+* Performances
+* Statistiques
+* Évaluations
+* Paramètres optimisés
+* Historique des modèles
+
+---
+
+# 5. Les Entités Principales
+
+Le modèle métier comprend notamment :
+
+* User
+* Account
+* Broker
+* Market
+* Instrument
+* Candle
+* Tick
+* Observation
+* Context
+* Scenario
+* Hypothesis
+* Probability
+* RiskAssessment
+* Decision
+* Order
+* Position
+* Trade
+* Event
+* Strategy
+* Portfolio
+* Session
+* LearningRecord
+* Alert
+* AuditLog
+
+---
+
+# 6. Relations Conceptuelles
+
+Les principales relations sont les suivantes :
+
+Un **Market** contient plusieurs **Instrument**.
+
+Un **Instrument** génère des **Candle** et des **Tick**.
+
+Les données de marché alimentent des **Observation**.
+
+Les **Observation** permettent de construire un **Context**.
+
+Le **Context** produit un ou plusieurs **Scenario**.
+
+Chaque **Scenario** est associé à une **Hypothesis**.
+
+Une **Hypothesis** reçoit une **Probability**.
+
+La **Probability** est confrontée à un **RiskAssessment**.
+
+Le **RiskAssessment** autorise ou refuse une **Decision**.
+
+Une **Decision** peut produire un **Order**.
+
+Un **Order** devient une **Position**.
+
+Une **Position** produit un **Trade**.
+
+Chaque étape génère un **Event**.
+
+Tous les événements alimentent les **LearningRecord**.
+
+---
+
+# 7. Classification des Données
+
+Les données sont classées selon leur rôle.
+
+## Référence
+
+Configuration stable.
+
+## Temporaire
+
+Informations utiles uniquement pendant le traitement.
+
+## Opérationnelle
+
+Utilisées par les moteurs.
+
+## Historique
+
+Archivées.
+
+## Analytique
+
+Destinées aux statistiques.
+
+---
+
+# 8. Traçabilité
+
+Chaque donnée importante possède :
+
+* Identifiant unique (UUID)
+* Date de création
+* Date de modification
+* Source
+* Version
+* Auteur (humain ou moteur)
+* Historique des modifications
+
+---
+
+# 9. Intégrité
+
+Les règles suivantes sont obligatoires :
+
+* Clés primaires immuables
+* Contraintes d'intégrité référentielle
+* Validation des formats
+* Horodatage UTC
+* Journalisation des modifications
+
+---
+
+# 10. Cycle de Vie
+
+Chaque donnée traverse les états :
+
+Création
+
+↓
+
+Validation
+
+↓
+
+Utilisation
+
+↓
+
+Archivage
+
+↓
+
+Suppression (si autorisée)
+
+Aucune suppression ne peut intervenir sans respecter la politique de conservation.
+
+---
+
+# 11. Politique de Conservation
+
+Les données sont réparties selon plusieurs horizons :
+
+Temps réel
+
+Court terme
+
+Moyen terme
+
+Long terme
+
+Archive permanente
+
+Les durées exactes seront définies dans la politique de gouvernance des données.
+
+---
+
+# 12. Performance
+
+L'architecture doit permettre :
+
+* lecture rapide ;
+* écriture rapide ;
+* indexation efficace ;
+* partitionnement des données volumineuses ;
+* archivage transparent.
+
+---
+
+# 13. Sécurité
+
+Les données sensibles doivent être protégées.
+
+Les principes suivants sont obligatoires :
+
+* chiffrement des informations sensibles ;
+* contrôle d'accès par rôle ;
+* journalisation des accès ;
+* sauvegardes régulières ;
+* restauration testée.
+
+---
+
+# 14. Compatibilité
+
+Le DAD est indépendant :
+
+* du SGBD utilisé ;
+* des langages de programmation ;
+* des frameworks.
+
+Il décrit les concepts, non leur implémentation.
+
+---
+
+# 15. Gouvernance
+
+Toute évolution du modèle de données doit :
+
+* préserver la compatibilité lorsque cela est possible ;
+* être documentée ;
+* être versionnée ;
+* être validée avant déploiement.
+
+---
+
+# 16. Vision Long Terme
+
+Le modèle de données doit permettre :
+
+* l'ajout de nouveaux courtiers ;
+* de nouveaux marchés ;
+* de nouveaux moteurs d'IA ;
+* de nouvelles stratégies ;
+* de nouveaux indicateurs ;
+* de nouveaux actifs.
+
+Sans remise en cause de l'architecture existante.
+
+---
+
+# 17. Conclusion
+
+Le Data Architecture Document constitue le patrimoine informationnel de TSP-JULES.
+
+Il garantit que chaque donnée collectée, produite ou exploitée par la plateforme reste cohérente, traçable, sécurisée et exploitable tout au long du cycle de vie du système.

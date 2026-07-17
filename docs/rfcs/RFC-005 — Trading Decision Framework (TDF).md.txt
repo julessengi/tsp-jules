@@ -1,0 +1,385 @@
+# TSP-JULES
+
+# RFC-005 — Trading Decision Framework (TDF)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Trading Decision Framework (TDF) définit le processus officiel de prise de décision de TSP-JULES.
+
+Il décrit comment une observation devient une décision, puis une exécution potentielle.
+
+Le TDF garantit que toutes les décisions sont :
+
+* explicables ;
+* reproductibles ;
+* mesurables ;
+* compatibles avec le TMO et le TRF.
+
+---
+
+# 2. Mission
+
+Transformer des observations du marché en décisions probabilistes tout en respectant les contraintes de risque définies par TSP-JULES.
+
+---
+
+# 3. Principes Fondamentaux
+
+* Une décision est le résultat d'un raisonnement, jamais d'un indicateur unique.
+* Le contexte prime toujours sur le signal.
+* Une probabilité n'est jamais une certitude.
+* Une opportunité doit être validée avant d'être exécutée.
+* Le Risk Guardian possède un droit de veto sur toute décision.
+
+---
+
+# 4. Cycle de Décision
+
+Chaque décision suit obligatoirement le cycle suivant :
+
+1. Observer
+2. Contextualiser
+3. Formuler une hypothèse
+4. Rechercher des preuves
+5. Calculer une probabilité
+6. Évaluer le risque
+7. Décider
+8. Exécuter (si autorisé)
+9. Enregistrer
+10. Apprendre
+
+Aucune étape ne peut être ignorée.
+
+---
+
+# 5. Les Acteurs du Processus
+
+## Sentinel
+
+Responsabilité :
+
+Observer le marché.
+
+Entrées :
+
+* flux de prix ;
+* données de marché ;
+* événements.
+
+Sortie :
+
+Observation structurée.
+
+---
+
+## Analyst
+
+Responsabilité :
+
+Construire le contexte.
+
+Analyse :
+
+* structure ;
+* tendance ;
+* volatilité ;
+* momentum ;
+* liquidité.
+
+Sortie :
+
+Contexte de marché.
+
+---
+
+## Strategy Engine
+
+Responsabilité :
+
+Identifier les scénarios compatibles avec le contexte.
+
+Exemples :
+
+* poursuite de tendance ;
+* cassure ;
+* retour à la moyenne ;
+* retournement ;
+* compression de volatilité.
+
+Sortie :
+
+Liste des scénarios plausibles.
+
+---
+
+## Probability Engine
+
+Responsabilité :
+
+Évaluer la probabilité de chaque scénario.
+
+Entrées :
+
+* contexte ;
+* hypothèses ;
+* historiques ;
+* validations.
+
+Sortie :
+
+Score de confiance et probabilité estimée.
+
+---
+
+## Risk Guardian
+
+Responsabilité :
+
+Autoriser ou refuser la décision.
+
+Contrôles :
+
+* risque par trade ;
+* exposition ;
+* drawdown ;
+* budget de risque ;
+* règles de sécurité.
+
+Sortie :
+
+APPROVED ou REJECTED.
+
+---
+
+## Executor
+
+Responsabilité :
+
+Exécuter les ordres autorisés.
+
+Fonctions :
+
+* ouverture ;
+* modification ;
+* fermeture ;
+* journalisation.
+
+---
+
+## Historian
+
+Responsabilité :
+
+Enregistrer toutes les décisions.
+
+Chaque décision est historisée avec :
+
+* les observations ;
+* les hypothèses ;
+* la probabilité ;
+* le risque ;
+* la décision finale ;
+* le résultat.
+
+---
+
+## Coach
+
+Responsabilité :
+
+Évaluer les performances et proposer des améliorations.
+
+Le Coach ne modifie jamais directement les règles de production.
+
+---
+
+# 6. Pipeline de Décision
+
+```text
+Observation
+        │
+        ▼
+Contexte
+        │
+        ▼
+Hypothèse
+        │
+        ▼
+Validation
+        │
+        ▼
+Probabilité
+        │
+        ▼
+Évaluation du risque
+        │
+        ▼
+Décision
+        │
+        ▼
+Exécution
+        │
+        ▼
+Journalisation
+        │
+        ▼
+Apprentissage
+```
+
+---
+
+# 7. Les États de Décision
+
+Une opportunité peut être dans l'un des états suivants :
+
+* DETECTED
+* UNDER_ANALYSIS
+* WAITING_CONFIRMATION
+* HIGH_PROBABILITY
+* APPROVED
+* REJECTED
+* EXECUTED
+* CLOSED
+* ARCHIVED
+
+Chaque changement d'état est enregistré.
+
+---
+
+# 8. Gestion des Hypothèses
+
+Toute décision débute par une ou plusieurs hypothèses.
+
+Exemple :
+
+Hypothèse :
+
+« Une expansion haussière est en cours. »
+
+Validation :
+
+* structure confirmée ;
+* momentum confirmé ;
+* volatilité compatible ;
+* contexte favorable.
+
+Une hypothèse peut être :
+
+* confirmée ;
+* infirmée ;
+* reportée.
+
+---
+
+# 9. Calcul de la Probabilité
+
+La probabilité est obtenue par la combinaison de plusieurs familles d'informations.
+
+* contexte ;
+* structure ;
+* momentum ;
+* volatilité ;
+* liquidité ;
+* confirmations des capteurs ;
+* performances historiques de scénarios similaires.
+
+Le moteur doit rester évolutif afin d'intégrer des modèles probabilistes plus avancés (par exemple bayésiens ou issus de l'apprentissage automatique).
+
+---
+
+# 10. Politique de Décision
+
+Le Probability Engine propose.
+
+Le Risk Guardian décide.
+
+Le système peut produire quatre décisions :
+
+* BUY
+* SELL
+* WAIT
+* REJECT
+
+WAIT est une décision valide.
+
+REJECT est une décision de protection.
+
+---
+
+# 11. Explicabilité
+
+Chaque décision doit pouvoir répondre aux questions suivantes :
+
+Pourquoi cette opportunité a-t-elle été détectée ?
+
+Pourquoi ce scénario a-t-il été retenu ?
+
+Quels éléments ont augmenté la probabilité ?
+
+Quels éléments ont diminué la probabilité ?
+
+Pourquoi le risque a-t-il été accepté ou refusé ?
+
+---
+
+# 12. Journal de Décision
+
+Chaque décision enregistre au minimum :
+
+* identifiant unique ;
+* horodatage ;
+* actif ;
+* unité de temps ;
+* observations ;
+* contexte ;
+* hypothèses ;
+* scénario retenu ;
+* probabilité estimée ;
+* niveau de risque ;
+* décision finale ;
+* résultat.
+
+---
+
+# 13. Compatibilité
+
+Le TDF dépend :
+
+* du TMO (Trading Market Ontology) ;
+* du TRF (Trading Risk Framework).
+
+Le TDF est indépendant :
+
+* des technologies ;
+* des courtiers ;
+* des plateformes d'exécution.
+
+---
+
+# 14. Évolutivité
+
+Le TDF est conçu pour intégrer de nouveaux moteurs de décision, de nouveaux modèles probabilistes et de nouvelles stratégies sans remettre en cause son architecture.
+
+Toute évolution doit préserver :
+
+* la traçabilité ;
+* l'explicabilité ;
+* la reproductibilité des décisions.
+
+---
+
+# 15. Conclusion
+
+Le Trading Decision Framework constitue le moteur de raisonnement de TSP-JULES.
+
+Il transforme des observations en décisions disciplinées, probabilistes et contrôlées par le risque.
+
+Son objectif n'est pas de prédire le marché, mais de sélectionner les opportunités présentant le meilleur équilibre entre probabilité de réussite et maîtrise du risque, conformément aux principes fondateurs de TSP-JULES.

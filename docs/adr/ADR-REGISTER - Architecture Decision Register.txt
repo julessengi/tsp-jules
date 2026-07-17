@@ -1,0 +1,67 @@
+# TSP-JULES
+
+# ADR-REGISTER — Architecture Decision Register
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Ce document regroupe les décisions architecturales majeures de TSP-JULES.
+
+Il constitue la référence officielle expliquant les principaux choix techniques et leurs motivations.
+
+---
+
+# 2. Principes
+
+Chaque décision est :
+
+* justifiée ;
+* documentée ;
+* révisable ;
+* traçable.
+
+Une décision ne peut être modifiée qu'après une analyse de son impact sur les RFC existantes.
+
+---
+
+# 3. Décisions Fondatrices
+
+| ID     | Décision                                   | Motivation                                                                                                                                                 |
+| ------ | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ADR-01 | **Architecture modulaire (DDD)**           | Séparer clairement les domaines métier et faciliter l'évolution du système.                                                                                |
+| ADR-02 | **Backend NestJS + TypeScript**            | Fournir une architecture robuste, typée et adaptée aux API, WebSocket et traitements asynchrones.                                                          |
+| ADR-03 | **PostgreSQL + Prisma ORM**                | Garantir l'intégrité des données, les migrations versionnées et une excellente maintenabilité.                                                             |
+| ADR-04 | **Architecture orientée événements (EDA)** | Découpler les services et favoriser une communication asynchrone évolutive.                                                                                |
+| ADR-05 | **Plugin & Extension Framework**           | Permettre l'ajout de courtiers, stratégies, IA et outils sans modifier le Core Domain.                                                                     |
+| ADR-06 | **Docker comme standard d'exécution**      | Assurer des environnements reproductibles du développement à la production.                                                                                |
+| ADR-07 | **Redis comme cache et Event Bus**         | Optimiser les performances et supporter les échanges temps réel.                                                                                           |
+| ADR-08 | **Security by Design**                     | Intégrer la sécurité dès la conception de la plateforme.                                                                                                   |
+| ADR-09 | **Architecture API First**                 | Définir les contrats avant l'implémentation afin de limiter les dépendances.                                                                               |
+| ADR-10 | **Vision progressive**                     | Développer TSP-JULES v1 comme une plateforme de trading intelligente, tout en préparant son évolution vers un système d'exploitation décisionnel (TSP-OS). |
+
+---
+
+# 4. Règles d'Évolution
+
+Toute nouvelle décision importante doit :
+
+* être ajoutée à ce registre ;
+* préciser son impact sur les RFC existantes ;
+* être validée avant implémentation.
+
+Si le registre devient trop volumineux, chaque décision pourra être extraite dans un ADR individuel.
+
+---
+
+# 5. Conclusion
+
+L'Architecture Decision Register constitue la mémoire des choix structurants de TSP-JULES.
+
+Il garantit que les décisions techniques restent compréhensibles, cohérentes et traçables tout au long de l'évolution de la plateforme.

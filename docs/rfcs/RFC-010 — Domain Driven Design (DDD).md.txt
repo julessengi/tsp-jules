@@ -1,0 +1,539 @@
+# TSP-JULES
+
+# RFC-010 — Domain-Driven Design (DDD)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Cette RFC définit le modèle Domain-Driven Design (DDD) de TSP-JULES.
+
+Son objectif est d'organiser le système autour des concepts métier plutôt qu'autour des technologies.
+
+Le domaine métier constitue la source unique de vérité.
+
+---
+
+# 2. Vision
+
+TSP-JULES est une plateforme d'intelligence financière.
+
+Le logiciel doit refléter les concepts du métier :
+
+Observer
+
+↓
+
+Comprendre
+
+↓
+
+Décider
+
+↓
+
+Protéger
+
+↓
+
+Exécuter
+
+↓
+
+Apprendre
+
+---
+
+# 3. Domaine Principal
+
+Core Domain
+
+**Financial Decision Intelligence**
+
+Mission :
+
+Produire les meilleures décisions possibles dans un environnement probabiliste.
+
+Tous les autres domaines soutiennent cette mission.
+
+---
+
+# 4. Sous-domaines
+
+## Core Domain
+
+* Market Intelligence
+* Decision Intelligence
+* Risk Intelligence
+* Knowledge Intelligence
+
+---
+
+## Supporting Domains
+
+* Market Data
+* Broker Integration
+* Reporting
+* Dashboard
+* Notifications
+
+---
+
+## Generic Domains
+
+* Authentification
+* Utilisateurs
+* Configuration
+* Journalisation
+* Monitoring
+* Sécurité
+
+---
+
+# 5. Bounded Contexts
+
+Chaque contexte possède :
+
+* son vocabulaire ;
+* ses règles ;
+* son modèle ;
+* sa persistance.
+
+---
+
+## BC-01 Market Observation
+
+Responsable :
+
+Sentinel
+
+Entités :
+
+* Tick
+* Candle
+* Feed
+* Instrument
+* Session
+
+Sortie :
+
+Market Observation
+
+---
+
+## BC-02 Market Intelligence
+
+Responsable :
+
+Analyst
+
+Entités :
+
+* Trend
+* Structure
+* Volatility
+* Momentum
+* Liquidity
+
+Sortie :
+
+Market Context
+
+---
+
+## BC-03 Strategy
+
+Responsable :
+
+Strategy Engine
+
+Entités :
+
+* Strategy
+* Pattern
+* Scenario
+* Hypothesis
+
+Sortie :
+
+Trading Scenario
+
+---
+
+## BC-04 Decision
+
+Responsable :
+
+Probability Engine
+
+Entités :
+
+* Evidence
+* Score
+* Confidence
+* Probability
+* Decision
+
+Sortie :
+
+Trading Decision
+
+---
+
+## BC-05 Risk
+
+Responsable :
+
+Risk Guardian
+
+Entités :
+
+* Budget
+* Exposure
+* Position Size
+* Drawdown
+* Restriction
+
+Sortie :
+
+Risk Approval
+
+---
+
+## BC-06 Execution
+
+Responsable :
+
+Executor
+
+Entités :
+
+* Order
+* Position
+* Trade
+* Execution
+
+Sortie :
+
+Trade Result
+
+---
+
+## BC-07 Knowledge
+
+Responsable :
+
+Coach
+
+Entités :
+
+* Experience
+* Lesson
+* Recommendation
+* Model
+* Learning Record
+
+Sortie :
+
+Knowledge Update
+
+---
+
+## BC-08 Administration
+
+Responsable :
+
+Platform Core
+
+Entités :
+
+* User
+* Role
+* Permission
+* Configuration
+
+---
+
+# 6. Ubiquitous Language
+
+Le langage officiel de TSP-JULES est défini ici.
+
+Tous les développeurs utilisent les mêmes termes.
+
+Exemples :
+
+Observation
+
+Context
+
+Scenario
+
+Evidence
+
+Probability
+
+Decision
+
+Risk
+
+Trade
+
+Experience
+
+Knowledge
+
+Learning
+
+Aucun synonyme ne doit être utilisé dans le code.
+
+---
+
+# 7. Agrégats
+
+Les principaux agrégats sont :
+
+Market
+
+Strategy
+
+Decision
+
+Risk
+
+Trade
+
+Knowledge
+
+Portfolio
+
+Session
+
+Chaque agrégat possède une Aggregate Root unique.
+
+---
+
+# 8. Entités
+
+Une entité possède une identité persistante.
+
+Exemples :
+
+Trade
+
+Order
+
+Decision
+
+Portfolio
+
+Strategy
+
+---
+
+# 9. Value Objects
+
+Les objets de valeur sont immuables.
+
+Exemples :
+
+Price
+
+Probability
+
+Confidence
+
+Risk Score
+
+Spread
+
+Timeframe
+
+Money
+
+Lot Size
+
+Timestamp
+
+---
+
+# 10. Domain Services
+
+Les services métier encapsulent les traitements complexes.
+
+Exemples :
+
+Probability Service
+
+Risk Service
+
+Market Analysis Service
+
+Execution Service
+
+Learning Service
+
+---
+
+# 11. Domain Events
+
+Les événements constituent le moyen officiel de communication.
+
+Exemples :
+
+MarketObserved
+
+TrendDetected
+
+ScenarioCreated
+
+ProbabilityCalculated
+
+RiskApproved
+
+RiskRejected
+
+TradeOpened
+
+TradeClosed
+
+KnowledgeUpdated
+
+---
+
+# 12. Repositories
+
+Chaque agrégat possède son dépôt.
+
+Exemples :
+
+TradeRepository
+
+StrategyRepository
+
+DecisionRepository
+
+KnowledgeRepository
+
+PortfolioRepository
+
+---
+
+# 13. Factories
+
+Les objets complexes sont créés via des factories.
+
+Exemples :
+
+DecisionFactory
+
+TradeFactory
+
+ScenarioFactory
+
+KnowledgeFactory
+
+RiskAssessmentFactory
+
+---
+
+# 14. Anti-Corruption Layer (ACL)
+
+Les systèmes externes ne doivent jamais polluer le domaine métier.
+
+Des adaptateurs traduisent les données des plateformes externes.
+
+Exemples :
+
+TradingView Adapter
+
+Deriv Adapter
+
+MetaTrader Adapter
+
+REST Adapter
+
+WebSocket Adapter
+
+---
+
+# 15. Architecture Hexagonale
+
+Le domaine métier est au centre.
+
+Les adaptateurs sont en périphérie.
+
+Ports entrants :
+
+* API REST
+* WebSocket
+* CLI
+* Dashboard
+
+Ports sortants :
+
+* TradingView
+* Deriv
+* MT5
+* PostgreSQL
+* Redis
+* Notifications
+
+---
+
+# 16. Dépendances
+
+Les dépendances autorisées sont :
+
+Infrastructure
+
+↓
+
+Application
+
+↓
+
+Domain
+
+Le Domain ne dépend d'aucune technologie.
+
+---
+
+# 17. Gouvernance
+
+Toute nouvelle fonctionnalité doit :
+
+* appartenir à un Bounded Context ;
+* utiliser le langage ubiquitaire ;
+* respecter les agrégats ;
+* publier des événements ;
+* être documentée.
+
+---
+
+# 18. Vision d'Évolution
+
+Le DDD permet d'ajouter :
+
+* de nouveaux courtiers ;
+* de nouvelles stratégies ;
+* de nouveaux moteurs IA ;
+* de nouveaux actifs ;
+* de nouveaux marchés ;
+
+sans modifier le cœur métier.
+
+---
+
+# 19. Conclusion
+
+Le Domain-Driven Design constitue la structure organisationnelle de TSP-JULES.
+
+Il garantit que l'architecture logicielle reste fidèle au métier, indépendante des technologies et capable d'évoluer sur plusieurs années sans perdre sa cohérence.
+
+Chaque ligne de code devra exprimer clairement un concept métier défini dans cette RFC.

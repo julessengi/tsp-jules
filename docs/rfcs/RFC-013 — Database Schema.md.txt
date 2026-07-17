@@ -1,0 +1,353 @@
+# TSP-JULES
+
+# RFC-013 — Database Schema
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Cette RFC définit le schéma logique de la base de données de TSP-JULES.
+
+Elle traduit les concepts du DAD en un modèle relationnel normalisé, prêt à être implémenté dans PostgreSQL avec Prisma ORM.
+
+---
+
+# 2. Objectifs
+
+Le schéma doit garantir :
+
+* cohérence des données ;
+* traçabilité complète ;
+* évolutivité ;
+* hautes performances ;
+* auditabilité.
+
+---
+
+# 3. SGBD retenu
+
+## Base principale
+
+PostgreSQL
+
+Raisons :
+
+* conformité ACID ;
+* performances ;
+* JSONB ;
+* index avancés ;
+* extensions ;
+* réplication.
+
+---
+
+# 4. Découpage logique
+
+La base est organisée en plusieurs domaines :
+
+* auth
+* market
+* analysis
+* strategy
+* decision
+* risk
+* execution
+* knowledge
+* reporting
+* system
+
+Chaque domaine correspond à un Bounded Context défini dans le DDD.
+
+---
+
+# 5. Tables principales
+
+## Domaine auth
+
+* users
+* roles
+* permissions
+* user_sessions
+* api_keys
+
+---
+
+## Domaine market
+
+* markets
+* instruments
+* timeframes
+* candles
+* ticks
+* market_events
+
+---
+
+## Domaine analysis
+
+* contexts
+* trends
+* structures
+* volatility_snapshots
+* momentum_snapshots
+* liquidity_zones
+
+---
+
+## Domaine strategy
+
+* strategies
+* scenarios
+* hypotheses
+* evidences
+
+---
+
+## Domaine decision
+
+* probabilities
+* decisions
+* decision_logs
+
+---
+
+## Domaine risk
+
+* risk_profiles
+* risk_budgets
+* drawdowns
+* exposures
+* risk_events
+
+---
+
+## Domaine execution
+
+* brokers
+* accounts
+* orders
+* positions
+* trades
+* executions
+
+---
+
+## Domaine knowledge
+
+* experiences
+* lessons
+* knowledge_nodes
+* knowledge_relations
+* model_versions
+
+---
+
+## Domaine reporting
+
+* reports
+* dashboards
+* metrics
+
+---
+
+## Domaine system
+
+* audit_logs
+* event_store
+* notifications
+* configurations
+
+---
+
+# 6. Relations majeures
+
+```text
+User
+ │
+ ├── Account
+ │
+ ├── Strategy
+ │
+ └── RiskProfile
+
+Instrument
+ │
+ ├── Candle
+ ├── Tick
+ ├── Context
+ ├── Scenario
+ └── Trade
+
+Trade
+ │
+ ├── Decision
+ ├── Order
+ ├── Position
+ ├── RiskAssessment
+ └── Experience
+```
+
+---
+
+# 7. Clés primaires
+
+Toutes les tables utilisent des UUID.
+
+Exemple :
+
+```sql
+id UUID PRIMARY KEY
+```
+
+---
+
+# 8. Horodatage
+
+Chaque table métier contient au minimum :
+
+* created_at
+* updated_at
+* deleted_at (soft delete lorsque pertinent)
+
+Les dates sont stockées en UTC.
+
+---
+
+# 9. Audit
+
+Les opérations sensibles sont historisées :
+
+* création ;
+* modification ;
+* suppression logique ;
+* validation.
+
+Les journaux sont immuables.
+
+---
+
+# 10. Event Store
+
+Tous les événements métier sont enregistrés.
+
+Colonnes minimales :
+
+* event_id
+* event_type
+* aggregate_type
+* aggregate_id
+* payload (JSONB)
+* occurred_at
+* version
+
+---
+
+# 11. Indexation
+
+Des index sont créés sur :
+
+* instrument_id
+* timeframe
+* occurred_at
+* trade_id
+* strategy_id
+* decision_id
+* user_id
+
+Des index composites sont prévus pour les requêtes fréquentes.
+
+---
+
+# 12. Contraintes
+
+* clés étrangères ;
+* unicité des identifiants ;
+* validation des états ;
+* intégrité référentielle.
+
+---
+
+# 13. Historisation
+
+Les données critiques (décisions, risques, événements, trades) ne sont jamais supprimées physiquement.
+
+Une politique d'archivage est appliquée.
+
+---
+
+# 14. Performances
+
+Le schéma prévoit :
+
+* partitionnement des tables volumineuses (ticks, candles, event_store) ;
+* compression des archives ;
+* index adaptés aux requêtes analytiques.
+
+---
+
+# 15. Sécurité
+
+Les données sensibles sont protégées par :
+
+* chiffrement des secrets ;
+* contrôle d'accès par rôle ;
+* journalisation des accès.
+
+---
+
+# 16. ORM
+
+Prisma ORM est retenu.
+
+Principes :
+
+* migrations versionnées ;
+* validation automatique ;
+* génération des clients ;
+* compatibilité TypeScript.
+
+---
+
+# 17. Sauvegarde
+
+Stratégie :
+
+* sauvegarde quotidienne ;
+* journaux de transactions ;
+* restauration testée régulièrement.
+
+---
+
+# 18. Gouvernance
+
+Toute modification du schéma nécessite :
+
+* une migration versionnée ;
+* des tests de compatibilité ;
+* une mise à jour de cette RFC.
+
+---
+
+# 19. Vision d'Évolution
+
+Le schéma permet :
+
+* l'ajout de nouveaux courtiers ;
+* de nouvelles stratégies ;
+* de nouveaux modèles d'IA ;
+* de nouveaux actifs ;
+* de nouvelles extensions via le futur Plugin Framework.
+
+---
+
+# 20. Conclusion
+
+Le Database Schema constitue la traduction physique du modèle de données de TSP-JULES.
+
+Il fournit une base robuste, évolutive et cohérente pour l'ensemble des services de la plateforme, tout en assurant la traçabilité, la performance et la sécurité des informations.

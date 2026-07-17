@@ -1,0 +1,352 @@
+# TSP-JULES
+
+# RFC-017 — Plugin & Extension Framework
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Cette RFC définit l'architecture officielle des extensions (Plugins) de TSP-JULES.
+
+Elle permet d'ajouter ou de remplacer des fonctionnalités sans modifier le Core Domain.
+
+---
+
+# 2. Mission
+
+Construire une plateforme ouverte, modulaire et évolutive.
+
+Le cœur métier doit rester stable tandis que les intégrations évoluent indépendamment.
+
+---
+
+# 3. Principes
+
+Chaque extension doit :
+
+* être indépendante ;
+* être versionnée ;
+* être documentée ;
+* être testable ;
+* respecter les contrats API ;
+* respecter les règles de sécurité.
+
+Une extension ne modifie jamais directement le Core Domain.
+
+---
+
+# 4. Catégories d'Extensions
+
+## Broker Plugins
+
+Permettent la connexion avec des plateformes de trading.
+
+Exemples :
+
+* Deriv
+* MetaTrader 5
+* Binance
+* Interactive Brokers
+
+---
+
+## Market Data Plugins
+
+Collectent les données de marché.
+
+Exemples :
+
+* TradingView
+* WebSocket personnalisé
+* REST Market Feed
+
+---
+
+## Indicator Plugins
+
+Ajoutent des indicateurs techniques.
+
+Exemples :
+
+* RSI
+* EMA
+* MACD
+* Bollinger Bands
+* ATR
+* VWAP
+
+---
+
+## Strategy Plugins
+
+Implémentent des stratégies de trading.
+
+Exemples :
+
+* Breakout
+* Pullback
+* Mean Reversion
+* Trend Following
+* Smart Money Concepts
+
+---
+
+## AI Plugins
+
+Ajoutent des moteurs d'intelligence artificielle.
+
+Exemples :
+
+* OpenAI
+* Ollama
+* Modèles locaux
+* Moteurs de prédiction personnalisés
+
+---
+
+## Automation Plugins
+
+Automatisent des processus.
+
+Exemples :
+
+* n8n
+* Webhooks
+* Cron
+* Planificateurs
+
+---
+
+## Notification Plugins
+
+Envoient des alertes.
+
+Exemples :
+
+* Email
+* Telegram
+* WhatsApp (selon les API disponibles)
+* Discord
+
+---
+
+## Reporting Plugins
+
+Produisent des rapports.
+
+Exemples :
+
+* PDF
+* Excel
+* Tableau de bord
+* Power BI
+
+---
+
+# 5. Cycle de Vie d'un Plugin
+
+Chaque plugin suit les étapes suivantes :
+
+Installation
+
+↓
+
+Validation
+
+↓
+
+Activation
+
+↓
+
+Utilisation
+
+↓
+
+Mise à jour
+
+↓
+
+Désactivation
+
+↓
+
+Suppression
+
+---
+
+# 6. Structure Standard
+
+Chaque plugin contient :
+
+* manifest.json
+* code source
+* configuration
+* documentation
+* tests
+* numéro de version
+* licence
+
+---
+
+# 7. Manifest
+
+Exemple :
+
+```json
+{
+  "name": "TradingView Plugin",
+  "version": "1.0.0",
+  "author": "TSP-JULES",
+  "type": "market-data",
+  "apiVersion": "1.0",
+  "permissions": [
+    "market.read"
+  ]
+}
+```
+
+---
+
+# 8. Contrat d'Extension
+
+Chaque plugin doit implémenter les méthodes suivantes :
+
+* initialize()
+* start()
+* stop()
+* health()
+* version()
+
+Les interfaces sont définies dans le SDK officiel.
+
+---
+
+# 9. Communication
+
+Les plugins communiquent via :
+
+* Event Bus ;
+* API internes ;
+* WebSocket lorsque nécessaire.
+
+Ils n'accèdent jamais directement aux composants internes sans contrat.
+
+---
+
+# 10. Gestion des Permissions
+
+Les permissions sont déclarées explicitement.
+
+Exemples :
+
+* market.read
+* market.write
+* order.create
+* trade.read
+* notification.send
+* ai.inference
+
+Tout accès non déclaré est refusé.
+
+---
+
+# 11. Isolation
+
+Les plugins sont isolés du Core Domain.
+
+Une défaillance d'un plugin ne doit pas interrompre la plateforme.
+
+Les erreurs sont contenues et journalisées.
+
+---
+
+# 12. Versionnement
+
+Chaque plugin indique :
+
+* sa version ;
+* la version minimale du Core compatible ;
+* les dépendances éventuelles.
+
+---
+
+# 13. Sécurité
+
+Avant activation, chaque plugin est :
+
+* validé ;
+* contrôlé ;
+* vérifié.
+
+Les plugins officiels peuvent être signés numériquement.
+
+---
+
+# 14. Observabilité
+
+Chaque plugin expose :
+
+* son état ;
+* ses métriques ;
+* ses journaux ;
+* son historique d'erreurs.
+
+---
+
+# 15. Catalogue des Plugins
+
+Le système maintient un registre interne contenant :
+
+* plugins installés ;
+* version ;
+* statut ;
+* date d'installation ;
+* auteur ;
+* permissions.
+
+---
+
+# 16. Compatibilité
+
+Les plugins doivent respecter :
+
+* le DDD ;
+* l'API Contract ;
+* l'Event Catalog ;
+* la Security Architecture.
+
+Ils ne doivent jamais contourner les règles métier.
+
+---
+
+# 17. Gouvernance
+
+Toute extension officielle :
+
+* est revue ;
+* est testée ;
+* est documentée ;
+* est versionnée.
+
+Les extensions expérimentales sont clairement identifiées.
+
+---
+
+# 18. Vision Long Terme
+
+Le Plugin Framework doit permettre à TSP-JULES d'intégrer facilement de nouveaux courtiers, indicateurs, moteurs d'IA, systèmes de notification et outils d'automatisation sans modifier le cœur de la plateforme.
+
+---
+
+# 19. Conclusion
+
+Le Plugin & Extension Framework fait de TSP-JULES une plateforme extensible.
+
+Le Core Domain reste stable tandis que les capacités du système évoluent grâce à des extensions indépendantes, sécurisées et gouvernées.

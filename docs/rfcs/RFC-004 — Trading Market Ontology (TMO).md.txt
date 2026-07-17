@@ -1,0 +1,580 @@
+# TSP-JULES
+
+# RFC-004 — Trading Market Ontology (TMO)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Trading Market Ontology (TMO) définit le modèle conceptuel officiel utilisé par TSP-JULES pour représenter les marchés financiers.
+
+Il établit un vocabulaire commun, une définition normalisée des concepts du marché et les relations entre ces concepts.
+
+Toutes les analyses, décisions, calculs de probabilité et évaluations du risque doivent être compatibles avec cette ontologie.
+
+---
+
+# 2. Mission
+
+Permettre à TSP-JULES de raisonner sur le marché à partir de concepts métiers plutôt que d'indicateurs isolés.
+
+Les indicateurs techniques ne constituent pas une connaissance.
+
+Ils représentent uniquement des instruments de mesure utilisés pour observer certains phénomènes du marché.
+
+---
+
+# 3. Principes Fondateurs
+
+Le marché est un système dynamique.
+
+Le marché est probabiliste.
+
+Le marché est adaptatif.
+
+Le marché est observé mais jamais parfaitement connu.
+
+Les décisions reposent sur des hypothèses validées par des observations.
+
+Le contexte possède toujours une priorité supérieure au signal.
+
+Le risque est une propriété permanente du marché.
+
+---
+
+# 4. Les Entités Fondamentales
+
+Le TMO définit les objets métiers suivants.
+
+## Prix
+
+Le prix représente l'état observable du marché à un instant donné.
+
+Le prix est une conséquence.
+
+Il ne constitue jamais une explication.
+
+---
+
+## Temps
+
+Le temps représente la dimension dans laquelle évolue le marché.
+
+Il comprend notamment :
+
+* l'unité de temps ;
+* la durée ;
+* le cycle ;
+* la fréquence des observations.
+
+---
+
+## Structure
+
+La structure décrit l'organisation générale du mouvement du marché.
+
+Une structure peut appartenir à l'un des états suivants :
+
+* accumulation ;
+* expansion ;
+* tendance ;
+* correction ;
+* consolidation ;
+* retournement.
+
+---
+
+## Volatilité
+
+La volatilité mesure l'intensité des variations du prix.
+
+Elle représente l'énergie disponible dans le marché.
+
+---
+
+## Momentum
+
+Le momentum représente la vitesse et la force d'un mouvement.
+
+Un momentum élevé indique une accélération.
+
+Un momentum faible indique un ralentissement.
+
+---
+
+## Liquidité
+
+La liquidité représente les zones où une forte concentration d'ordres est susceptible d'exister.
+
+Elle influence les réactions du marché et les mouvements de prix.
+
+---
+
+## Probabilité
+
+La probabilité est une estimation quantitative de la réussite d'un scénario.
+
+Elle n'exprime jamais une certitude.
+
+---
+
+## Risque
+
+Le risque représente la perte potentielle associée à une décision.
+
+Il doit être connu avant toute exécution.
+
+---
+
+## Décision
+
+La décision est le résultat du raisonnement produit par TSP-JULES.
+
+Elle peut être :
+
+* BUY ;
+* SELL ;
+* WAIT ;
+* REJECT.
+
+---
+
+# 5. Les Relations
+
+Le marché est observé.
+
+Les observations permettent de décrire un contexte.
+
+Le contexte permet de formuler des hypothèses.
+
+Les hypothèses sont validées ou rejetées par des observations complémentaires.
+
+Les hypothèses validées alimentent un calcul de probabilité.
+
+La probabilité est confrontée au risque.
+
+Le risque autorise ou interdit la décision.
+
+La décision peut conduire à une exécution.
+
+L'exécution produit un résultat.
+
+Le résultat enrichit la connaissance du système.
+
+---
+
+# 6. Les Capteurs
+
+Les indicateurs techniques sont considérés comme des capteurs.
+
+Ils ne prennent aucune décision.
+
+Exemples :
+
+* RSI : mesure du momentum relatif ;
+* EMA : mesure de la tendance ;
+* ATR : mesure de la volatilité ;
+* Bandes de Bollinger : mesure de la dispersion des prix ;
+* Volume : mesure de l'activité (lorsqu'il est disponible).
+
+Leur rôle est d'alimenter les moteurs de raisonnement.
+
+---
+
+# 7. Les États du Marché
+
+Le marché est représenté comme une succession d'états.
+
+Les principaux états reconnus par TSP-JULES sont :
+
+* accumulation ;
+* expansion ;
+* tendance haussière ;
+* tendance baissière ;
+* consolidation ;
+* correction ;
+* retournement ;
+* forte volatilité ;
+* faible volatilité.
+
+Le système peut reconnaître plusieurs états simultanément.
+
+---
+
+# 8. Les Événements
+
+Les événements représentent les changements significatifs observés.
+
+Exemples :
+
+* cassure de structure ;
+* changement de volatilité ;
+* accélération du momentum ;
+* rupture de tendance ;
+* entrée dans une zone de liquidité ;
+* validation ou invalidation d'un scénario.
+
+Chaque événement est horodaté et enregistré.
+
+---
+
+# 9. Les Hypothèses
+
+Toute analyse commence par une hypothèse.
+
+Une hypothèse est une explication possible d'un comportement du marché.
+
+Elle ne devient une connaissance qu'après validation.
+
+Une hypothèse peut être :
+
+* confirmée ;
+* rejetée ;
+* maintenue sous observation.
+
+---
+
+# 10. Les Règles Ontologiques
+
+Les règles suivantes sont obligatoires :
+
+Aucun indicateur ne peut, à lui seul, déclencher une décision.
+
+Aucun signal ne peut être interprété sans contexte.
+
+Toute décision doit être traçable jusqu'aux observations qui l'ont motivée.
+
+Toute observation doit être datée.
+
+Toute hypothèse doit être vérifiable.
+
+Toute probabilité doit être recalculable.
+
+---
+
+# 11. Compatibilité
+
+Cette ontologie est indépendante :
+
+* des courtiers ;
+* des marchés ;
+* des langages de programmation ;
+* des technologies utilisées.
+
+Elle constitue une référence stable pour toutes les versions futures de TSP-JULES.
+
+---
+
+# 12. Évolutivité
+
+Le TMO est extensible.
+
+De nouvelles entités, relations ou états pourront être ajoutés dans des versions ultérieures sans remettre en cause les principes fondateurs.
+
+Toute modification devra être documentée et versionnée.
+
+---
+
+# 13. Conclusion
+
+Le Trading Market Ontology constitue le socle conceptuel de TSP-JULES.
+
+Il fournit un langage commun permettant aux différents moteurs de la plateforme d'observer, de comprendre et de raisonner sur les marchés financiers de manière cohérente, explicable et reproductible.
+
+Aucune décision, aucun calcul de probabilité et aucune règle de gestion du risque ne peut être défini en contradiction avec cette ontologie.
+# TSP-JULES
+
+# RFC-004 — Trading Market Ontology (TMO)
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le Trading Market Ontology (TMO) définit le modèle conceptuel officiel utilisé par TSP-JULES pour représenter les marchés financiers.
+
+Il établit un vocabulaire commun, une définition normalisée des concepts du marché et les relations entre ces concepts.
+
+Toutes les analyses, décisions, calculs de probabilité et évaluations du risque doivent être compatibles avec cette ontologie.
+
+---
+
+# 2. Mission
+
+Permettre à TSP-JULES de raisonner sur le marché à partir de concepts métiers plutôt que d'indicateurs isolés.
+
+Les indicateurs techniques ne constituent pas une connaissance.
+
+Ils représentent uniquement des instruments de mesure utilisés pour observer certains phénomènes du marché.
+
+---
+
+# 3. Principes Fondateurs
+
+Le marché est un système dynamique.
+
+Le marché est probabiliste.
+
+Le marché est adaptatif.
+
+Le marché est observé mais jamais parfaitement connu.
+
+Les décisions reposent sur des hypothèses validées par des observations.
+
+Le contexte possède toujours une priorité supérieure au signal.
+
+Le risque est une propriété permanente du marché.
+
+---
+
+# 4. Les Entités Fondamentales
+
+Le TMO définit les objets métiers suivants.
+
+## Prix
+
+Le prix représente l'état observable du marché à un instant donné.
+
+Le prix est une conséquence.
+
+Il ne constitue jamais une explication.
+
+---
+
+## Temps
+
+Le temps représente la dimension dans laquelle évolue le marché.
+
+Il comprend notamment :
+
+* l'unité de temps ;
+* la durée ;
+* le cycle ;
+* la fréquence des observations.
+
+---
+
+## Structure
+
+La structure décrit l'organisation générale du mouvement du marché.
+
+Une structure peut appartenir à l'un des états suivants :
+
+* accumulation ;
+* expansion ;
+* tendance ;
+* correction ;
+* consolidation ;
+* retournement.
+
+---
+
+## Volatilité
+
+La volatilité mesure l'intensité des variations du prix.
+
+Elle représente l'énergie disponible dans le marché.
+
+---
+
+## Momentum
+
+Le momentum représente la vitesse et la force d'un mouvement.
+
+Un momentum élevé indique une accélération.
+
+Un momentum faible indique un ralentissement.
+
+---
+
+## Liquidité
+
+La liquidité représente les zones où une forte concentration d'ordres est susceptible d'exister.
+
+Elle influence les réactions du marché et les mouvements de prix.
+
+---
+
+## Probabilité
+
+La probabilité est une estimation quantitative de la réussite d'un scénario.
+
+Elle n'exprime jamais une certitude.
+
+---
+
+## Risque
+
+Le risque représente la perte potentielle associée à une décision.
+
+Il doit être connu avant toute exécution.
+
+---
+
+## Décision
+
+La décision est le résultat du raisonnement produit par TSP-JULES.
+
+Elle peut être :
+
+* BUY ;
+* SELL ;
+* WAIT ;
+* REJECT.
+
+---
+
+# 5. Les Relations
+
+Le marché est observé.
+
+Les observations permettent de décrire un contexte.
+
+Le contexte permet de formuler des hypothèses.
+
+Les hypothèses sont validées ou rejetées par des observations complémentaires.
+
+Les hypothèses validées alimentent un calcul de probabilité.
+
+La probabilité est confrontée au risque.
+
+Le risque autorise ou interdit la décision.
+
+La décision peut conduire à une exécution.
+
+L'exécution produit un résultat.
+
+Le résultat enrichit la connaissance du système.
+
+---
+
+# 6. Les Capteurs
+
+Les indicateurs techniques sont considérés comme des capteurs.
+
+Ils ne prennent aucune décision.
+
+Exemples :
+
+* RSI : mesure du momentum relatif ;
+* EMA : mesure de la tendance ;
+* ATR : mesure de la volatilité ;
+* Bandes de Bollinger : mesure de la dispersion des prix ;
+* Volume : mesure de l'activité (lorsqu'il est disponible).
+
+Leur rôle est d'alimenter les moteurs de raisonnement.
+
+---
+
+# 7. Les États du Marché
+
+Le marché est représenté comme une succession d'états.
+
+Les principaux états reconnus par TSP-JULES sont :
+
+* accumulation ;
+* expansion ;
+* tendance haussière ;
+* tendance baissière ;
+* consolidation ;
+* correction ;
+* retournement ;
+* forte volatilité ;
+* faible volatilité.
+
+Le système peut reconnaître plusieurs états simultanément.
+
+---
+
+# 8. Les Événements
+
+Les événements représentent les changements significatifs observés.
+
+Exemples :
+
+* cassure de structure ;
+* changement de volatilité ;
+* accélération du momentum ;
+* rupture de tendance ;
+* entrée dans une zone de liquidité ;
+* validation ou invalidation d'un scénario.
+
+Chaque événement est horodaté et enregistré.
+
+---
+
+# 9. Les Hypothèses
+
+Toute analyse commence par une hypothèse.
+
+Une hypothèse est une explication possible d'un comportement du marché.
+
+Elle ne devient une connaissance qu'après validation.
+
+Une hypothèse peut être :
+
+* confirmée ;
+* rejetée ;
+* maintenue sous observation.
+
+---
+
+# 10. Les Règles Ontologiques
+
+Les règles suivantes sont obligatoires :
+
+Aucun indicateur ne peut, à lui seul, déclencher une décision.
+
+Aucun signal ne peut être interprété sans contexte.
+
+Toute décision doit être traçable jusqu'aux observations qui l'ont motivée.
+
+Toute observation doit être datée.
+
+Toute hypothèse doit être vérifiable.
+
+Toute probabilité doit être recalculable.
+
+---
+
+# 11. Compatibilité
+
+Cette ontologie est indépendante :
+
+* des courtiers ;
+* des marchés ;
+* des langages de programmation ;
+* des technologies utilisées.
+
+Elle constitue une référence stable pour toutes les versions futures de TSP-JULES.
+
+---
+
+# 12. Évolutivité
+
+Le TMO est extensible.
+
+De nouvelles entités, relations ou états pourront être ajoutés dans des versions ultérieures sans remettre en cause les principes fondateurs.
+
+Toute modification devra être documentée et versionnée.
+
+---
+
+# 13. Conclusion
+
+Le Trading Market Ontology constitue le socle conceptuel de TSP-JULES.
+
+Il fournit un langage commun permettant aux différents moteurs de la plateforme d'observer, de comprendre et de raisonner sur les marchés financiers de manière cohérente, explicable et reproductible.
+
+Aucune décision, aucun calcul de probabilité et aucune règle de gestion du risque ne peut être défini en contradiction avec cette ontologie.

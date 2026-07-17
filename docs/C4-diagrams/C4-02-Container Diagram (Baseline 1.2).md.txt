@@ -1,0 +1,53 @@
+                                         TRADER
+                                            │
+                                            │ HTTPS / WebSocket
+                                            ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                                FRONTEND WEB                                              │
+│                                                                                          │
+│ Dashboard • Trading Journal • Analytics • Reports • Administration • Settings            │
+└───────────────────────────────────────┬──────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                             CONTROL CENTER                                               │
+│------------------------------------------------------------------------------------------│
+│ • Supervision globale                                                                    │
+│ • Configuration système                                                                  │
+│ • Monitoring des services                                                                │
+│ • Santé des modules (Health Check)                                                       │
+│ • Gestion des utilisateurs                                                               │
+│ • Gestion des extensions                                                                 │
+│ • Logs centralisés                                                                       │
+│ • Tableau de bord technique                                                              │
+└───────────────┬──────────────────────────────────────────────────────────────────────────┘
+                │
+                ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                             TSP-JULES CORE                                               │
+│                                                                                          │
+│  Sentinel ──► Analyst ──► Probability Engine ──► Risk Guardian ──► Executor              │
+│       │                                                               │                  │
+│       └──────────────────────────────► Historian ◄─────────────────────┘                  │
+│                                          │                                                │
+│                                          ▼                                                │
+│                                     Coach AI                                              │
+│                                                                                          │
+│  Messenger • Automation Hub • Extension Manager                                          │
+└───────────────────────────────────────┬──────────────────────────────────────────────────┘
+                                        │
+                ┌───────────────────────┼───────────────────────────────┐
+                │                       │                               │
+                ▼                       ▼                               ▼
+          PostgreSQL                Redis                        Event Bus
+                │
+                ▼
+        Données • Journal • Historique
+
+                                        │
+                                        ▼
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│                           SYSTÈMES EXTERNES                                               │
+│                                                                                          │
+│ TradingView │ Deriv API │ MetaTrader 5 │ n8n │ OpenAI │ Ollama │ Plugins futurs          │
+└──────────────────────────────────────────────────────────────────────────────────────────┘

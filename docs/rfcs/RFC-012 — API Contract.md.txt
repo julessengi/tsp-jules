@@ -1,0 +1,514 @@
+# TSP-JULES
+
+# RFC-012 — API Contract
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Le API Contract définit les interfaces de communication officielles de TSP-JULES.
+
+Il décrit :
+
+* les API internes ;
+* les API externes ;
+* les formats d'échange ;
+* les règles d'authentification ;
+* les conventions d'erreur ;
+* les mécanismes de versionnement.
+
+---
+
+# 2. Mission
+
+Garantir une communication fiable, sécurisée et évolutive entre :
+
+* les services internes ;
+* les interfaces utilisateurs ;
+* les plateformes financières externes ;
+* les moteurs d'intelligence.
+
+---
+
+# 3. Principes API
+
+Toutes les API TSP-JULES doivent respecter :
+
+* Contrat avant implémentation.
+* Versionnement obligatoire.
+* Documentation obligatoire.
+* Validation des schémas.
+* Sécurité par défaut.
+* Traçabilité complète.
+
+---
+
+# 4. Architecture de Communication
+
+TSP-JULES utilise deux types principaux de communication.
+
+## Communication synchrone
+
+Utilisation :
+
+* REST API
+* GraphQL (option future)
+
+Pour :
+
+* consultation ;
+* configuration ;
+* administration ;
+* reporting.
+
+---
+
+## Communication temps réel
+
+Utilisation :
+
+* WebSocket
+* Event Bus
+
+Pour :
+
+* données marché ;
+* événements ;
+* alertes ;
+* décisions.
+
+---
+
+# 5. API Gateway
+
+Point d'entrée officiel.
+
+Responsabilités :
+
+* authentification ;
+* routage ;
+* validation ;
+* limitation des requêtes ;
+* journalisation.
+
+Base URL :
+
+```
+https://api.tsp-jules.com/v1
+```
+
+---
+
+# 6. Convention REST
+
+Format :
+
+```
+/api/v1/{resource}
+```
+
+Exemples :
+
+```
+GET /api/v1/markets
+
+GET /api/v1/instruments
+
+GET /api/v1/decisions
+
+POST /api/v1/orders
+```
+
+---
+
+# 7. Authentification
+
+Mécanisme prévu :
+
+JWT + Refresh Token.
+
+Structure :
+
+```json
+{
+ "accessToken":"token",
+ "expiresIn":3600,
+ "refreshToken":"token"
+}
+```
+
+---
+
+# 8. Market API
+
+Responsable :
+
+Market Observation Context.
+
+---
+
+## GET /markets
+
+Retourne les marchés disponibles.
+
+Réponse :
+
+```json
+{
+ "id":"V100",
+ "name":"Volatility 100",
+ "status":"active"
+}
+```
+
+---
+
+## GET /instruments/{id}
+
+Retourne les informations d'un actif.
+
+---
+
+## GET /candles
+
+Paramètres :
+
+* instrument
+* timeframe
+* start
+* end
+
+Retour :
+
+```json
+{
+ "open":100,
+ "high":105,
+ "low":98,
+ "close":103,
+ "timestamp":"UTC"
+}
+```
+
+---
+
+# 9. Analysis API
+
+Responsable :
+
+Market Intelligence.
+
+---
+
+## GET /contexts/latest
+
+Retourne le dernier contexte analysé.
+
+Exemple :
+
+```json
+{
+ "trend":"bullish",
+ "volatility":"medium",
+ "momentum":"strong"
+}
+```
+
+---
+
+## GET /patterns
+
+Retourne les structures détectées.
+
+---
+
+# 10. Strategy API
+
+Responsable :
+
+Strategy Engine.
+
+---
+
+## POST /scenarios/analyze
+
+Entrée :
+
+```json
+{
+ "instrument":"V100",
+ "contextId":"123"
+}
+```
+
+Sortie :
+
+```json
+{
+ "scenario":"breakout",
+ "confidence":0.78
+}
+```
+
+---
+
+# 11. Decision API
+
+Responsable :
+
+Probability Engine.
+
+---
+
+## GET /decisions/latest
+
+Retour :
+
+```json
+{
+ "action":"BUY",
+ "probability":0.72,
+ "reason":[
+ "trend_confirmed",
+ "momentum_positive"
+ ]
+}
+```
+
+---
+
+## POST /decisions/{id}/review
+
+Permet une analyse humaine.
+
+---
+
+# 12. Risk API
+
+Responsable :
+
+Risk Guardian.
+
+---
+
+## GET /risk/status
+
+Retour :
+
+```json
+{
+ "state":"NORMAL",
+ "riskBudget":500,
+ "dailyLoss":20
+}
+```
+
+---
+
+## POST /risk/check
+
+Entrée :
+
+```json
+{
+ "capital":1000,
+ "risk":1
+}
+```
+
+Sortie :
+
+```json
+{
+ "approved":true,
+ "maxPosition":10
+}
+```
+
+---
+
+# 13. Execution API
+
+Responsable :
+
+Executor.
+
+---
+
+## POST /orders
+
+Création d'un ordre.
+
+Entrée :
+
+```json
+{
+ "symbol":"V100",
+ "side":"BUY",
+ "size":5
+}
+```
+
+---
+
+## GET /positions
+
+Liste des positions.
+
+---
+
+## POST /positions/{id}/close
+
+Fermeture d'une position.
+
+---
+
+# 14. Knowledge API
+
+Responsable :
+
+Knowledge Engine.
+
+---
+
+## GET /knowledge/search
+
+Recherche dans la connaissance.
+
+---
+
+## POST /knowledge/experience
+
+Enregistre une expérience.
+
+---
+
+# 15. WebSocket API
+
+Canal temps réel :
+
+```
+wss://api.tsp-jules.com/events
+```
+
+Événements disponibles :
+
+* MarketDataReceived
+* ContextCreated
+* ScenarioCreated
+* ProbabilityCalculated
+* RiskApproved
+* TradeCompleted
+* KnowledgeUpdated
+
+---
+
+# 16. Format Standard des Réponses
+
+Succès :
+
+```json
+{
+ "success":true,
+ "data":{}
+}
+```
+
+Erreur :
+
+```json
+{
+ "success":false,
+ "error":{
+   "code":"INVALID_REQUEST",
+   "message":"Description"
+ }
+}
+```
+
+---
+
+# 17. Codes d'Erreur
+
+Convention :
+
+| Code                | Signification        |
+| ------------------- | -------------------- |
+| AUTH_ERROR          | Authentification     |
+| VALIDATION_ERROR    | Données invalides    |
+| RESOURCE_NOT_FOUND  | Objet absent         |
+| RISK_REJECTED       | Risque refusé        |
+| EXECUTION_FAILED    | Exécution échouée    |
+| SERVICE_UNAVAILABLE | Service indisponible |
+
+---
+
+# 18. Intégrations Externes
+
+Les plateformes externes utilisent des adaptateurs.
+
+Exemples :
+
+* TradingView Adapter
+* Deriv Adapter
+* MetaTrader Adapter
+
+Aucune plateforme externe ne communique directement avec le Core Domain.
+
+---
+
+# 19. Versionnement
+
+Toutes les API sont versionnées.
+
+Exemple :
+
+```
+/api/v1
+/api/v2
+```
+
+Une nouvelle version ne doit pas casser les clients existants.
+
+---
+
+# 20. Documentation
+
+Chaque API doit fournir :
+
+* description ;
+* schéma ;
+* exemples ;
+* erreurs possibles ;
+* règles de sécurité.
+
+Format recommandé :
+
+OpenAPI Specification.
+
+---
+
+# 21. Gouvernance
+
+Toute modification d'un contrat API nécessite :
+
+* mise à jour de la RFC ;
+* changement de version ;
+* validation ;
+* tests de compatibilité.
+
+---
+
+# 22. Conclusion
+
+Le API Contract constitue le langage technique de TSP-JULES.
+
+Il garantit que les composants peuvent évoluer indépendamment tout en conservant une communication stable, sécurisée et compréhensible.
+
+Grâce à cette approche, TSP-JULES peut intégrer de nouveaux moteurs, courtiers et technologies sans compromettre son architecture.

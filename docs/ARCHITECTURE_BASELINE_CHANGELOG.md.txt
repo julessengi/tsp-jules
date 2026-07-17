@@ -1,0 +1,116 @@
+# TSP-JULES
+
+# ARCHITECTURE BASELINE & CHANGELOG
+
+**Version :** 1.1
+
+**Statut :** Fondatrice
+
+**Date :** 13 Juillet 2026
+
+---
+
+# 1. Objet
+
+Ce document constitue la référence officielle des évolutions de l'architecture de TSP-JULES.
+
+Il permet :
+
+* de préserver la cohérence des RFC existantes ;
+* d'éviter la réécriture complète de la documentation ;
+* de centraliser les décisions transverses ;
+* de définir la version officielle de l'architecture.
+
+À partir de cette version, tous les nouveaux développements devront s'y conformer.
+
+---
+
+# 2. Baseline v1.1
+
+La version **1.1** introduit une évolution de la nomenclature interne afin de mieux représenter les responsabilités fonctionnelles des principaux services.
+
+Cette évolution n'affecte ni les objectifs métier, ni les interfaces publiques, ni les RFC précédemment validées.
+
+---
+
+# 3. Changelog
+
+## 2026-07-13 — Baseline v1.1
+
+### Renommage des services
+
+| Ancienne désignation | Nouvelle désignation |
+| -------------------- | -------------------- |
+| Market Service       | Sentinel             |
+| Analysis Service     | Analyst              |
+| Decision Engine      | Probability Engine   |
+| Risk Service         | Risk Guardian        |
+| Execution Service    | Executor             |
+| Knowledge Service    | Historian            |
+| AI Service           | Coach AI             |
+| Notification Service | Messenger            |
+| Automation Service   | Automation Hub       |
+| Plugin Manager       | Extension Manager    |
+
+---
+
+### Vision d'architecture
+
+À partir de la Baseline v1.1, le Core de TSP-JULES est constitué des services suivants :
+
+* Sentinel
+* Analyst
+* Probability Engine
+* Risk Guardian
+* Executor
+* Historian
+* Coach AI
+* Messenger
+* Automation Hub
+* Extension Manager
+
+---
+
+# 4. Compatibilité
+
+Les RFC-001 à RFC-017 restent pleinement valides.
+
+Toute référence aux anciennes appellations doit être interprétée selon le tableau de correspondance ci-dessus.
+
+Aucune réécriture des documents existants n'est exigée.
+
+---
+
+# 5. Règles d'Évolution
+
+Toute évolution future de l'architecture devra :
+
+* être inscrite dans ce document ;
+* indiquer son impact ;
+* préciser sa version de référence ;
+* être approuvée avant son application.
+
+Les changements majeurs devront être accompagnés d'une nouvelle Baseline (v1.2, v2.0, etc.).
+
+---
+
+# 6. Politique de Gouvernance
+
+Les documents RFC décrivent les fondations de la plateforme.
+
+Le présent document constitue la source officielle pour :
+
+* les renommages ;
+* les adaptations de nomenclature ;
+* les décisions transverses ;
+* les évolutions de l'architecture.
+
+En cas de divergence, la version la plus récente de cette Baseline prévaut.
+
+---
+
+# 7. Objectif
+
+L'objectif est de garantir une architecture stable, évolutive et traçable, sans multiplier les réécritures de la documentation existante.
+
+Ce document constitue le point de référence officiel avant le démarrage du développement de TSP-JULES.

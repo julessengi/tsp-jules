@@ -1,0 +1,327 @@
+# TSP-JULES
+
+# RFC-015 — Coding Standards
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Cette RFC définit les règles officielles de développement logiciel de TSP-JULES.
+
+Son objectif est d'assurer un code cohérent, lisible, testable et évolutif, indépendamment du nombre de développeurs ou de la durée du projet.
+
+---
+
+# 2. Principes Directeurs
+
+Tout code doit être :
+
+* Lisible avant d'être ingénieux.
+* Simple avant d'être complexe.
+* Testable avant d'être livré.
+* Documenté lorsque nécessaire.
+* Conforme au domaine métier défini dans les RFC précédentes.
+
+---
+
+# 3. Stack Technique
+
+Le développement officiel repose sur :
+
+* TypeScript
+* Node.js (LTS)
+* NestJS
+* Prisma ORM
+* PostgreSQL
+* Docker
+* Redis
+* Git
+* GitHub Actions
+
+Les versions sont verrouillées dans les fichiers de configuration du projet.
+
+---
+
+# 4. Architecture du Projet
+
+Le code est organisé par domaines métier (DDD).
+
+Exemple :
+
+```text
+src/
+├── market/
+├── analysis/
+├── strategy/
+├── decision/
+├── risk/
+├── execution/
+├── knowledge/
+├── shared/
+├── infrastructure/
+└── app/
+```
+
+Chaque domaine possède :
+
+* controllers
+* services
+* entities
+* value-objects
+* repositories
+* events
+* dto
+* tests
+
+---
+
+# 5. Conventions de Nommage
+
+Classes :
+
+PascalCase
+
+Exemple :
+
+DecisionService
+
+RiskGuardian
+
+---
+
+Interfaces :
+
+Préfixe I interdit.
+
+Exemple :
+
+DecisionRepository
+
+---
+
+Variables :
+
+camelCase
+
+Exemple :
+
+currentRisk
+
+marketContext
+
+---
+
+Constantes :
+
+UPPER_SNAKE_CASE
+
+Exemple :
+
+MAX_DAILY_RISK
+
+DEFAULT_TIMEOUT
+
+---
+
+Fichiers :
+
+kebab-case
+
+Exemple :
+
+decision.service.ts
+
+market-context.entity.ts
+
+---
+
+# 6. Principes SOLID
+
+Tous les modules doivent respecter :
+
+* Single Responsibility
+* Open/Closed
+* Liskov Substitution
+* Interface Segregation
+* Dependency Inversion
+
+---
+
+# 7. Injection de Dépendances
+
+Toute dépendance est injectée.
+
+Les instanciations directes (`new`) sont limitées aux factories ou aux points d'entrée autorisés.
+
+---
+
+# 8. Gestion des Erreurs
+
+Les erreurs sont :
+
+* typées ;
+* journalisées ;
+* contextualisées.
+
+Les messages destinés aux utilisateurs sont distincts des messages techniques.
+
+---
+
+# 9. Journalisation
+
+Utiliser un logger centralisé.
+
+Chaque journal contient au minimum :
+
+* timestamp UTC ;
+* niveau (INFO, WARN, ERROR, DEBUG) ;
+* service ;
+* traceId ;
+* message.
+
+---
+
+# 10. Tests
+
+Chaque fonctionnalité doit être couverte par :
+
+* tests unitaires ;
+* tests d'intégration ;
+* tests end-to-end lorsque nécessaire.
+
+Les nouvelles fonctionnalités ne sont pas fusionnées si les tests échouent.
+
+---
+
+# 11. Qualité du Code
+
+Outils recommandés :
+
+* ESLint
+* Prettier
+* Husky
+* Commitlint
+
+La qualité est vérifiée automatiquement dans le pipeline CI/CD.
+
+---
+
+# 12. Documentation
+
+Les éléments suivants doivent être documentés :
+
+* API publiques ;
+* algorithmes complexes ;
+* règles métier importantes.
+
+Éviter les commentaires décrivant des évidences.
+
+Préférer un code explicite.
+
+---
+
+# 13. Gestion Git
+
+Stratégie recommandée :
+
+* main
+* develop
+* feature/*
+* hotfix/*
+* release/*
+
+Les commits suivent la convention Conventional Commits.
+
+Exemples :
+
+```text
+feat(decision): add probability engine
+
+fix(risk): correct drawdown calculation
+
+docs(rfc): update api contract
+```
+
+---
+
+# 14. Revue de Code
+
+Toute Pull Request doit être relue avant fusion.
+
+Les critères de validation incluent :
+
+* conformité au DDD ;
+* respect des RFC ;
+* lisibilité ;
+* couverture de tests ;
+* absence de dette technique évidente.
+
+---
+
+# 15. Sécurité du Code
+
+Interdictions :
+
+* secrets dans le dépôt Git ;
+* mots de passe en clair ;
+* clés API codées en dur ;
+* désactivation des contrôles de sécurité.
+
+Les secrets sont chargés via des variables d'environnement ou un gestionnaire de secrets.
+
+---
+
+# 16. Performance
+
+Optimiser uniquement lorsque les mesures le justifient.
+
+La clarté du code prime sur les micro-optimisations.
+
+Toute optimisation doit être mesurée et documentée.
+
+---
+
+# 17. Dépréciation
+
+Les composants obsolètes sont :
+
+* marqués comme dépréciés ;
+* documentés ;
+* supprimés uniquement après une période de transition.
+
+---
+
+# 18. Gouvernance
+
+Le non-respect de cette RFC constitue une dette technique.
+
+Toute exception doit être justifiée et validée.
+
+---
+
+# 19. Vision Long Terme
+
+Ces standards sont destinés à évoluer avec la plateforme.
+
+Toute évolution doit préserver :
+
+* la cohérence ;
+* la maintenabilité ;
+* la qualité ;
+* la stabilité de l'architecture.
+
+---
+
+# 20. Conclusion
+
+Les Coding Standards constituent le référentiel de qualité de TSP-JULES.
+
+Ils garantissent que chaque contribution renforce la plateforme plutôt que d'accroître sa complexité.
+
+La qualité du code est considérée comme une fonctionnalité à part entière.

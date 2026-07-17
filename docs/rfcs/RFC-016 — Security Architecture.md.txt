@@ -1,0 +1,240 @@
+# TSP-JULES
+
+# RFC-016 — Security Architecture
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Cette RFC définit l'architecture de sécurité de TSP-JULES.
+
+Elle couvre l'authentification, l'autorisation, la protection des données, la sécurité des communications, la gestion des secrets, l'audit et la réponse aux incidents.
+
+---
+
+# 2. Objectifs
+
+Garantir :
+
+* la confidentialité ;
+* l'intégrité ;
+* la disponibilité ;
+* la traçabilité ;
+* la résilience.
+
+---
+
+# 3. Principes
+
+La sécurité est intégrée dès la conception (*Security by Design*).
+
+Les principes appliqués sont :
+
+* Least Privilege (moindre privilège) ;
+* Zero Trust ;
+* Defense in Depth ;
+* Secure by Default ;
+* Fail Secure.
+
+---
+
+# 4. Authentification
+
+Le système prend en charge :
+
+* JWT pour les API ;
+* Refresh Tokens ;
+* Rotation des tokens ;
+* Authentification multifacteur (MFA) en option pour la V1, recommandée pour les comptes administrateurs.
+
+---
+
+# 5. Autorisation
+
+Modèle principal :
+
+RBAC (Role-Based Access Control).
+
+Exemples de rôles :
+
+* Administrator
+* Trader
+* Analyst
+* Auditor
+* Service Account
+
+Les permissions sont définies au niveau des ressources et des actions.
+
+---
+
+# 6. Gestion des Secrets
+
+Les éléments suivants ne doivent jamais être stockés dans le dépôt Git :
+
+* clés API ;
+* mots de passe ;
+* certificats ;
+* secrets JWT.
+
+Ils sont fournis via des variables d'environnement ou un gestionnaire de secrets.
+
+---
+
+# 7. Sécurité des Communications
+
+Toutes les communications externes utilisent TLS.
+
+Les connexions WebSocket sont sécurisées (WSS).
+
+Les certificats sont renouvelés automatiquement.
+
+---
+
+# 8. Protection des API
+
+Les API appliquent :
+
+* validation des entrées ;
+* limitation de débit (Rate Limiting) ;
+* contrôle d'origine (CORS) ;
+* journalisation des erreurs ;
+* protection contre les requêtes malformées.
+
+---
+
+# 9. Protection des Données
+
+Les données sensibles sont :
+
+* chiffrées au repos lorsque nécessaire ;
+* chiffrées en transit ;
+* sauvegardées régulièrement.
+
+Les informations personnelles sont limitées au strict nécessaire.
+
+---
+
+# 10. Audit
+
+Toutes les actions sensibles génèrent un journal d'audit.
+
+Chaque entrée contient :
+
+* identifiant ;
+* utilisateur ou service ;
+* action ;
+* date UTC ;
+* résultat ;
+* traceId.
+
+Les journaux d'audit sont immuables.
+
+---
+
+# 11. Sécurité des Plugins
+
+Chaque extension fonctionne avec un périmètre de permissions explicite.
+
+Une extension ne peut accéder qu'aux ressources qui lui sont autorisées.
+
+Les extensions sont versionnées et signées lorsqu'elles sont distribuées officiellement.
+
+---
+
+# 12. Sécurité des Dépendances
+
+Les bibliothèques tierces sont :
+
+* analysées automatiquement ;
+* mises à jour régulièrement ;
+* surveillées pour les vulnérabilités connues.
+
+---
+
+# 13. Sauvegarde et Reprise
+
+Des sauvegardes automatiques sont réalisées.
+
+Les procédures de restauration sont testées régulièrement.
+
+Des objectifs de reprise (RPO/RTO) sont définis pour les environnements critiques.
+
+---
+
+# 14. Réponse aux Incidents
+
+En cas d'incident :
+
+1. Détection.
+2. Contention.
+3. Analyse.
+4. Correction.
+5. Validation.
+6. Retour d'expérience.
+
+Chaque incident est documenté.
+
+---
+
+# 15. Développement Sécurisé
+
+Les pratiques suivantes sont obligatoires :
+
+* revue de code ;
+* analyse statique ;
+* tests automatisés ;
+* validation des entrées ;
+* gestion centralisée des erreurs.
+
+---
+
+# 16. Journalisation
+
+Les événements de sécurité comprennent notamment :
+
+* tentative de connexion ;
+* échec d'authentification ;
+* modification des permissions ;
+* accès refusé ;
+* utilisation d'une clé API ;
+* chargement d'un plugin.
+
+---
+
+# 17. Conformité
+
+L'architecture vise à respecter les bonnes pratiques internationales en matière de sécurité des applications et des API.
+
+Les exigences réglementaires spécifiques pourront être ajoutées selon les juridictions concernées.
+
+---
+
+# 18. Gouvernance
+
+Toute évolution de l'architecture de sécurité :
+
+* est documentée ;
+* fait l'objet d'une revue ;
+* est validée avant mise en production.
+
+---
+
+# 19. Vision Long Terme
+
+La sécurité doit évoluer avec la plateforme.
+
+Les mécanismes pourront intégrer de nouvelles méthodes d'authentification, de chiffrement et de surveillance sans remettre en cause les fondations.
+
+---
+
+# 20. Conclusion
+
+La Security Architecture constitue le cadre de confiance de TSP-JULES.
+
+Elle protège les utilisateurs, les données, les intégrations et les décisions de la plateforme tout en permettant une évolution maîtrisée et conforme aux meilleures pratiques d'ingénierie.

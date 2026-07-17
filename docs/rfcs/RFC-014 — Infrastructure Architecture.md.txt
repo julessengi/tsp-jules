@@ -1,0 +1,386 @@
+# TSP-JULES
+
+# RFC-014 — Infrastructure Architecture
+
+**Version :** 1.0
+
+**Statut :** Fondatrice
+
+**Date :** 08 Juillet 2026
+
+---
+
+# 1. Objet
+
+Cette RFC définit l'infrastructure de référence de TSP-JULES.
+
+Elle décrit les composants d'exécution, les environnements, les mécanismes de déploiement, d'observabilité, de sauvegarde et de résilience.
+
+---
+
+# 2. Vision
+
+L'infrastructure doit être :
+
+* Reproductible
+* Portable
+* Sécurisée
+* Automatisée
+* Observable
+* Évolutive
+* Résiliente
+
+Aucun environnement ne doit dépendre d'une configuration manuelle.
+
+---
+
+# 3. Architecture Générale
+
+```text
+                    Internet
+                        │
+                 Reverse Proxy
+                  (Traefik/Nginx)
+                        │
+                 API Gateway (NestJS)
+                        │
+ ┌───────────────┬───────────────┬───────────────┐
+ │               │               │               │
+Market Service Decision Service Risk Service Knowledge Service
+ │               │               │               │
+ └───────────────┴───────────────┴───────────────┘
+                        │
+                  Event Bus (Redis)
+                        │
+     PostgreSQL     Redis     Object Storage
+                        │
+               Monitoring & Logging
+```
+
+---
+
+# 4. Environnements
+
+## Local
+
+Objectif :
+
+Développement.
+
+Services :
+
+* API
+* PostgreSQL
+* Redis
+* n8n
+* PgAdmin
+* Mailhog
+
+---
+
+## Test
+
+Objectif :
+
+Tests automatiques.
+
+Base de données isolée.
+
+Données temporaires.
+
+---
+
+## Staging
+
+Objectif :
+
+Validation avant production.
+
+Configuration identique à la production.
+
+---
+
+## Production
+
+Objectif :
+
+Exécution officielle.
+
+Haute disponibilité.
+
+Sauvegardes automatiques.
+
+---
+
+# 5. Conteneurisation
+
+Tous les composants sont exécutés dans des conteneurs Docker.
+
+Chaque service possède :
+
+* Dockerfile
+* Variables d'environnement
+* Health Check
+* Logs structurés
+
+---
+
+# 6. Orchestration
+
+Phase 1
+
+Docker Compose
+
+Phase 2
+
+Docker Swarm (optionnel)
+
+Phase 3
+
+Kubernetes (si montée en charge)
+
+---
+
+# 7. Réseau
+
+Les services communiquent via un réseau privé Docker.
+
+Les seuls points exposés sont :
+
+* API Gateway
+* Dashboard
+* WebSocket
+* Reverse Proxy
+
+Les bases de données ne sont jamais exposées publiquement.
+
+---
+
+# 8. Stockage
+
+## PostgreSQL
+
+Données métier.
+
+---
+
+## Redis
+
+Cache.
+
+Event Bus.
+
+Files d'attente.
+
+Sessions temporaires.
+
+---
+
+## Object Storage
+
+Documents.
+
+Rapports.
+
+Exports.
+
+Backups.
+
+---
+
+# 9. Configuration
+
+Toutes les configurations proviennent :
+
+* Variables d'environnement
+* Secrets sécurisés
+
+Aucun secret ne doit être inscrit dans le code source.
+
+---
+
+# 10. Observabilité
+
+## Logs
+
+Format JSON.
+
+Centralisés.
+
+Corrélables.
+
+---
+
+## Métriques
+
+CPU
+
+RAM
+
+Latence
+
+Temps de réponse
+
+Nombre d'événements
+
+Nombre de trades
+
+---
+
+## Traces
+
+Toutes les requêtes possèdent un Trace ID.
+
+---
+
+## Alertes
+
+Déclenchement automatique sur :
+
+* panne d'un service ;
+* dépassement de ressources ;
+* perte de connexion ;
+* erreurs critiques.
+
+---
+
+# 11. Sauvegardes
+
+Sauvegarde quotidienne PostgreSQL.
+
+Sauvegarde des volumes Docker.
+
+Archivage des logs.
+
+Tests réguliers de restauration.
+
+---
+
+# 12. Déploiement
+
+Pipeline CI/CD :
+
+GitHub
+
+↓
+
+Lint
+
+↓
+
+Tests
+
+↓
+
+Build Docker
+
+↓
+
+Analyse de sécurité
+
+↓
+
+Publication des images
+
+↓
+
+Déploiement automatique
+
+↓
+
+Tests de santé
+
+---
+
+# 13. Haute Disponibilité
+
+Services critiques :
+
+* API Gateway
+* PostgreSQL
+* Redis
+
+Prévoir une stratégie de redondance selon la croissance de la plateforme.
+
+---
+
+# 14. Résilience
+
+Chaque service doit :
+
+* redémarrer automatiquement ;
+* supporter les coupures réseau temporaires ;
+* publier son état de santé.
+
+---
+
+# 15. Supervision
+
+Tableau de bord d'exploitation comprenant :
+
+* état des services ;
+* consommation des ressources ;
+* connexions aux courtiers ;
+* état du Risk Guardian ;
+* files d'attente ;
+* erreurs.
+
+---
+
+# 16. Intégrations
+
+L'infrastructure doit permettre l'ajout de connecteurs :
+
+* TradingView
+* Deriv
+* MetaTrader 5
+* n8n
+* IA locale
+* IA cloud
+
+sans modification du cœur de la plateforme.
+
+---
+
+# 17. Politique de Mise à Jour
+
+Les mises à jour doivent être :
+
+* versionnées ;
+* testées ;
+* réversibles.
+
+Le retour arrière (rollback) doit être possible.
+
+---
+
+# 18. Gouvernance
+
+Toute évolution de l'infrastructure doit :
+
+* respecter cette RFC ;
+* être documentée ;
+* être validée avant mise en production.
+
+---
+
+# 19. Vision Long Terme
+
+L'infrastructure est conçue pour évoluer progressivement :
+
+* Développement local
+* VPS unique
+* Plusieurs serveurs
+* Cluster Docker
+* Kubernetes
+* Cloud hybride si nécessaire
+
+Le changement d'échelle ne doit pas imposer une réécriture des services.
+
+---
+
+# 20. Conclusion
+
+L'Infrastructure Architecture constitue le socle opérationnel de TSP-JULES.
+
+Elle garantit que les services peuvent être développés, testés, déployés et exploités de manière fiable, sécurisée et reproductible, tout en restant suffisamment flexibles pour accompagner l'évolution de la plateforme.

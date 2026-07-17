@@ -1,0 +1,885 @@
+# TSP-JULES
+# Roadmap Technique
+Version : 1.0
+Statut : Fondatrice
+Date : 08 Juillet 2026
+
+---
+
+# 1. Vision
+
+La roadmap définit la trajectoire officielle du projet TSP-JULES.
+
+Elle garantit que le développement suit une progression logique, maîtrisée et mesurable.
+
+Chaque étape doit produire un résultat exploitable avant le lancement de la suivante.
+
+Le projet suit une approche itérative.
+
+Aucune fonctionnalité ne sera développée sans validation de l'étape précédente.
+
+---
+
+# 2. Objectifs
+
+Construire une plateforme d'intelligence financière capable de :
+
+• Observer les marchés
+• Comprendre leur contexte
+• Evaluer les probabilités
+• Maîtriser le risque
+• Prendre des décisions
+• Exécuter automatiquement
+• Apprendre de ses résultats
+
+---
+
+# 3. Principes
+
+Cette roadmap respecte la Engineering Constitution.
+
+Les règles suivantes sont obligatoires :
+
+✓ Documentation avant développement
+
+✓ Architecture avant implémentation
+
+✓ Tests avant production
+
+✓ Mesure avant optimisation
+
+✓ Risque avant profit
+
+---
+
+# 4. Cycle de développement
+
+Chaque phase suit le même processus.
+
+Recherche
+
+↓
+
+Conception
+
+↓
+
+Validation
+
+↓
+
+Développement
+
+↓
+
+Tests
+
+↓
+
+Documentation
+
+↓
+
+Livraison
+
+↓
+
+Retour d'expérience
+
+---
+
+# 5. Les Grandes Phases
+
+---------------------------------------------------
+PHASE 0
+FOUNDATION
+---------------------------------------------------
+
+Objectif
+
+Construire les fondations intellectuelles.
+
+Livrables
+
+Engineering Constitution
+
+Glossary
+
+Roadmap
+
+TMO
+
+TDF
+
+TRF
+
+SAD
+
+DAD
+
+KAD
+
+Critère de validation
+
+Toute l'architecture est documentée.
+
+Aucun développement métier.
+
+---------------------------------------------------
+PHASE 1
+CORE PLATFORM
+---------------------------------------------------
+
+Objectif
+
+Construire le socle technique.
+
+Livrables
+
+Repository
+
+Architecture NestJS
+
+Docker
+
+PostgreSQL
+
+Redis
+
+CI/CD
+
+Configuration
+
+Logging
+
+Monitoring
+
+Authentification
+
+Validation
+
+Plateforme exécutable localement.
+
+---------------------------------------------------
+PHASE 2
+MARKET DATA
+---------------------------------------------------
+
+Objectif
+
+Connecter le monde extérieur.
+
+Livrables
+
+TradingView
+
+Deriv API
+
+MT5
+
+Webhooks
+
+Flux temps réel
+
+Stockage
+
+Validation
+
+Toutes les données arrivent correctement.
+
+---------------------------------------------------
+PHASE 3
+MARKET INTELLIGENCE
+---------------------------------------------------
+
+Objectif
+
+Construire le cerveau.
+
+Modules
+
+Sentinel
+
+Analyst
+
+Probability Engine
+
+Market Structure
+
+Pattern Detection
+
+Contexte
+
+Validation
+
+Le système comprend le marché.
+
+Aucune exécution.
+
+---------------------------------------------------
+PHASE 4
+RISK ENGINE
+---------------------------------------------------
+
+Objectif
+
+Construire le gardien du capital.
+
+Modules
+
+Risk Guardian
+
+Position Sizing
+
+Exposure
+
+Drawdown
+
+Kill Switch
+
+Validation
+
+Toutes les décisions passent par Risk Guardian.
+
+---------------------------------------------------
+PHASE 5
+EXECUTION
+---------------------------------------------------
+
+Objectif
+
+Construire le moteur d'exécution.
+
+Modules
+
+Executor
+
+Broker Adapter
+
+Orders
+
+Positions
+
+Trade Management
+
+Validation
+
+Le système peut trader en environnement de démonstration.
+
+---------------------------------------------------
+PHASE 6
+KNOWLEDGE
+---------------------------------------------------
+
+Objectif
+
+Construire la mémoire.
+
+Modules
+
+Historian
+
+Journal
+
+Statistics
+
+Learning
+
+Knowledge Base
+
+Validation
+
+Chaque décision est enregistrée.
+
+---------------------------------------------------
+PHASE 7
+DASHBOARD
+---------------------------------------------------
+
+Objectif
+
+Construire l'interface.
+
+Modules
+
+Dashboard
+
+Reports
+
+Analytics
+
+Notifications
+
+Monitoring
+
+Validation
+
+La plateforme est utilisable.
+
+---------------------------------------------------
+PHASE 8
+OPTIMIZATION
+---------------------------------------------------
+
+Objectif
+
+Optimiser.
+
+Modules
+
+Backtesting
+
+Benchmark
+
+Profiling
+
+Optimisation
+
+Performance
+
+Validation
+
+Toutes les améliorations sont mesurées.
+
+---------------------------------------------------
+PHASE 9
+PRODUCTION
+---------------------------------------------------
+
+Objectif
+
+Déploiement.
+
+Modules
+
+Cloud
+
+Monitoring
+
+Backup
+
+Recovery
+
+Sécurité
+
+Validation
+
+Plateforme stable.
+
+---
+
+# 6. Les Sprints
+
+Chaque phase est découpée en sprints.
+
+Chaque sprint produit :
+
+• une documentation
+
+• une démonstration
+
+• des tests
+
+• une validation
+
+Aucun sprint ne peut être ignoré.
+
+---
+
+# 7. Les Jalons
+
+Milestone A
+
+Fondations terminées.
+
+Milestone B
+
+Architecture terminée.
+
+Milestone C
+
+Plateforme fonctionnelle.
+
+Milestone D
+
+Premier trade automatique en démonstration.
+
+Milestone E
+
+Premier mois stable.
+
+Milestone F
+
+Version 1.0 officielle.
+
+---
+
+# 8. Définition de "Done"
+
+Une étape est considérée terminée uniquement si :
+
+Documentation terminée.
+
+Architecture validée.
+
+Code terminé.
+
+Tests validés.
+
+Performance mesurée.
+
+Documentation mise à jour.
+
+Version publiée.
+
+---
+
+# 9. Critères de Qualité
+
+Lisibilité
+
+Modularité
+
+Testabilité
+
+Sécurité
+
+Performance
+
+Maintenabilité
+
+Documentation
+
+---
+
+# 10. Gestion des Changements
+
+Toute évolution importante doit :
+
+être documentée
+
+être discutée
+
+être validée
+
+être testée
+
+être versionnée
+
+---
+
+# 11. Vision Long Terme
+
+Version 1
+
+Plateforme intelligente.
+
+Version 2
+
+Plateforme auto-apprenante.
+
+Version 3
+
+Multi-broker.
+
+Version 4
+
+Multi-actifs.
+
+Version 5
+
+Assistant financier complet.
+
+---
+
+# 12. Philosophie
+
+Le succès de TSP-JULES ne sera pas mesuré par le nombre de lignes de code.
+
+Il sera mesuré par :
+
+la qualité des décisions,
+
+la protection du capital,
+
+la robustesse de son architecture,
+
+et sa capacité à évoluer pendant de nombreuses années.
+
+---
+
+# 13. Gate Reviews (Critères de Passage)
+
+## Principe
+
+Chaque phase de TSP-JULES est protégée par une Gate Review.
+
+Une Gate représente un point de contrôle obligatoire.
+
+Le passage à la phase suivante est interdit tant que tous les critères de validation ne sont pas satisfaits.
+
+Cette règle garantit que le projet progresse sur des bases solides.
+
+---
+
+## Gate 0 — Fondation
+
+Objectif :
+
+Valider les fondations intellectuelles du projet.
+
+Documents obligatoires :
+
+✓ Engineering Constitution
+
+✓ Project Charter
+
+✓ Roadmap
+
+✓ Glossary
+
+✓ TMO
+
+✓ TDF
+
+✓ TRF
+
+✓ SAD
+
+✓ DAD
+
+✓ KAD
+
+Critères :
+
+Toutes les décisions fondamentales sont documentées.
+
+Les responsabilités sont clairement définies.
+
+Les risques majeurs sont identifiés.
+
+Résultat :
+
+Autorisation de commencer l'architecture technique.
+
+---
+
+## Gate 1 — Infrastructure
+
+Critères
+
+Architecture validée
+
+Docker opérationnel
+
+CI/CD fonctionnel
+
+Base de données disponible
+
+Gestion des secrets
+
+Monitoring minimal
+
+Résultat
+
+Autorisation de connecter les marchés.
+
+---
+
+## Gate 2 — Market Connectivity
+
+Critères
+
+TradingView connecté
+
+Deriv API connectée
+
+MT5 connecté
+
+Flux temps réel validé
+
+Journalisation opérationnelle
+
+Résultat
+
+Autorisation de développer les moteurs d'analyse.
+
+---
+
+## Gate 3 — Intelligence
+
+Critères
+
+Sentinel validé
+
+Analyst validé
+
+Probability Engine validé
+
+Structure Engine validé
+
+Tests réussis
+
+Résultat
+
+Autorisation d'activer le moteur de risque.
+
+---
+
+## Gate 4 — Risk Guardian
+
+Critères
+
+Toutes les règles de risque sont appliquées.
+
+Kill Switch testé.
+
+Position Sizing validé.
+
+Drawdown contrôlé.
+
+Résultat
+
+Autorisation de développer l'exécution.
+
+---
+
+## Gate 5 — Execution
+
+Critères
+
+Ordres envoyés correctement.
+
+Gestion des positions validée.
+
+Journal automatique fonctionnel.
+
+Aucune anomalie critique.
+
+Résultat
+
+Autorisation des tests complets.
+
+---
+
+## Gate 6 — Validation
+
+Critères
+
+Backtests validés.
+
+Tests en démonstration réussis.
+
+Performance conforme aux objectifs.
+
+Documentation complète.
+
+Résultat
+
+Autorisation du passage en production.
+
+---
+
+## Gate 7 — Production
+
+Critères
+
+Surveillance active.
+
+Sauvegardes opérationnelles.
+
+Plan de reprise testé.
+
+Sécurité validée.
+
+Résultat
+
+Version officiellement publiée.
+
+---
+
+# 14. Quality Gates
+
+Avant chaque Gate, les points suivants doivent être validés :
+
+✓ Documentation
+
+✓ Architecture
+
+✓ Code
+
+✓ Tests unitaires
+
+✓ Tests d'intégration
+
+✓ Tests fonctionnels
+
+✓ Performance
+
+✓ Sécurité
+
+✓ Journalisation
+
+✓ Monitoring
+
+✓ Documentation utilisateur
+
+Aucun point ne peut être ignoré.
+
+---
+
+# 15. Architecture Review Board (ARB)
+
+## Mission
+
+Garantir la cohérence technique du projet.
+
+Toute décision importante doit être examinée avant son implémentation.
+
+## Membres
+
+Architecte logiciel
+
+Architecte IA
+
+Responsable du risque
+
+Responsable qualité
+
+(Version actuelle : Julio Selemani et ChatGPT)
+
+## Responsabilités
+
+Valider les choix techniques.
+
+Refuser les solutions qui augmentent la dette technique.
+
+Garantir le respect de la Constitution.
+
+---
+
+# 16. Technical Debt Policy
+
+La dette technique est enregistrée, suivie et priorisée.
+
+Aucune dette critique ne peut être ignorée.
+
+Toute dette doit comporter :
+
+Description
+
+Impact
+
+Risque
+
+Priorité
+
+Plan de résolution
+
+Date cible
+
+---
+
+# 17. Research & Innovation
+
+Toute nouvelle idée suit obligatoirement ce cycle :
+
+Hypothèse
+
+↓
+
+Recherche
+
+↓
+
+Prototype
+
+↓
+
+Tests
+
+↓
+
+Analyse
+
+↓
+
+Validation
+
+↓
+
+Intégration
+
+↓
+
+Documentation
+
+Une idée non validée ne peut jamais être intégrée à la plateforme.
+
+---
+
+# 18. Success Metrics
+
+Le succès du projet sera évalué selon cinq dimensions.
+
+## Technique
+
+Disponibilité
+
+Performance
+
+Robustesse
+
+Maintenabilité
+
+## Fonctionnelle
+
+Précision des décisions
+
+Qualité des analyses
+
+Automatisation
+
+## Financière
+
+Drawdown
+
+Profit Factor
+
+Espérance
+
+Ratio rendement/risque
+
+## Intelligence
+
+Qualité des probabilités
+
+Amélioration continue
+
+Apprentissage
+
+## Documentation
+
+Complétude
+
+Traçabilité
+
+Mise à jour
+
+---
+
+# 19. Vision 2030
+
+TSP-JULES ambitionne de devenir une plateforme d'intelligence financière capable :
+
+de fonctionner avec plusieurs courtiers ;
+
+de gérer plusieurs classes d'actifs ;
+
+d'intégrer plusieurs modèles d'IA ;
+
+de proposer une architecture ouverte et extensible ;
+
+de servir de base à des applications professionnelles de gestion de décision financière.
+
+Chaque évolution devra respecter les principes fondateurs définis dans la TSP-JULES Engineering Constitution.

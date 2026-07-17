@@ -1,0 +1,299 @@
+# TSP-JULES
+
+# Project Philosophy
+
+Version : 1.0
+
+Statut : Fondatrice
+
+Date : 08 Juillet 2026
+
+---
+
+# « Nous ne construisons pas un robot.
+
+Nous construisons une intelligence capable de prendre de meilleures décisions. »
+
+---
+
+# Préface
+
+TSP-JULES est né d'une conviction simple.
+
+Le marché n'est pas prévisible.
+
+Il est probabiliste.
+
+Par conséquent, la mission d'un système intelligent n'est pas de prédire l'avenir.
+
+Sa mission est d'améliorer continuellement la qualité des décisions prises dans un environnement incertain.
+
+Cette philosophie guidera toutes les évolutions de la plateforme.
+
+---
+
+# Notre Vision
+
+Nous voulons construire une plateforme d'intelligence financière.
+
+Pas un robot.
+
+Pas un indicateur.
+
+Pas un système de signaux.
+
+Une plateforme capable de :
+
+* observer ;
+* comprendre ;
+* raisonner ;
+* décider ;
+* apprendre ;
+* évoluer.
+
+---
+
+# Notre Croyance
+
+Nous croyons que le succès durable ne repose pas sur la prédiction parfaite.
+
+Il repose sur une succession de décisions statistiquement avantageuses, prises avec discipline et protégées par une gestion rigoureuse du risque.
+
+---
+
+# Notre Définition du Trading
+
+Le trading n'est pas un jeu de hasard.
+
+Ce n'est pas une certitude.
+
+Ce n'est pas une intuition.
+
+Le trading est une discipline de prise de décision sous incertitude.
+
+Chaque décision possède une probabilité.
+
+Chaque probabilité possède un risque.
+
+Chaque risque possède un coût.
+
+Notre mission est d'améliorer progressivement cette chaîne.
+
+---
+
+# Notre Vision du Marché
+
+Le marché est un système complexe.
+
+Il évolue sous l'influence :
+
+* des participants ;
+* de la liquidité ;
+* du temps ;
+* de la volatilité ;
+* des déséquilibres entre acheteurs et vendeurs.
+
+Les indicateurs ne sont pas le marché.
+
+Ils sont uniquement des instruments de mesure.
+
+TSP-JULES cherchera toujours à comprendre les causes avant d'interpréter les conséquences.
+
+---
+
+# Notre Vision de l'Intelligence
+
+Une intelligence ne répond pas immédiatement.
+
+Elle observe.
+
+Elle réfléchit.
+
+Elle doute.
+
+Elle vérifie.
+
+Puis elle décide.
+
+TSP-JULES devra suivre exactement ce processus.
+
+---
+
+# Notre Vision du Risque
+
+Le risque est une ressource limitée.
+
+Il constitue un budget.
+
+Chaque décision consomme une partie de ce budget.
+
+Le système ne doit jamais engager un risque qu'il n'a pas préalablement accepté.
+
+La survie du capital est une condition nécessaire à toute performance durable.
+
+---
+
+# Notre Vision de l'Apprentissage
+
+Chaque trade est une expérience.
+
+Chaque erreur est une information.
+
+Chaque réussite est une hypothèse validée, jamais une preuve définitive.
+
+La plateforme devra apprendre autant de ses pertes que de ses gains.
+
+---
+
+# Notre Vision de la Technologie
+
+La technologie n'est pas un objectif.
+
+Elle est un moyen.
+
+Node.js pourra évoluer.
+
+Docker pourra évoluer.
+
+Les modèles d'IA pourront évoluer.
+
+Les courtiers pourront évoluer.
+
+L'architecture devra permettre ces évolutions sans remettre en cause les principes fondamentaux.
+
+---
+
+# Notre Vision de l'Ingénierie
+
+Un bon logiciel ne se mesure pas au nombre de lignes de code.
+
+Il se mesure à sa capacité :
+
+* à évoluer ;
+* à être compris ;
+* à être testé ;
+* à être maintenu ;
+* à être fiable.
+
+Le code doit toujours refléter la pensée qui l'a produit.
+
+---
+
+# Notre Vision de la Donnée
+
+Les données sont le patrimoine de TSP-JULES.
+
+Chaque observation.
+
+Chaque décision.
+
+Chaque résultat.
+
+Chaque événement.
+
+Chaque anomalie.
+
+Constitue une source d'apprentissage.
+
+Aucune donnée utile ne doit être perdue.
+
+---
+
+# Notre Vision de l'Architecture
+
+Nous privilégions :
+
+* la simplicité avant la complexité ;
+* la modularité avant le couplage ;
+* la transparence avant la magie ;
+* les preuves avant les opinions ;
+* les tests avant les suppositions.
+
+---
+
+# Notre Vision de la Recherche
+
+Nous refusons les certitudes absolues.
+
+Toute idée est une hypothèse.
+
+Toute hypothèse doit être testée.
+
+Toute expérimentation doit être mesurée.
+
+Toute amélioration doit être démontrée.
+
+---
+
+# Notre Vision de l'Échec
+
+L'échec n'est pas un défaut.
+
+L'échec est une donnée.
+
+Une stratégie qui échoue produit de la connaissance.
+
+Une erreur non analysée produit de la dette.
+
+Chaque échec devra être documenté.
+
+---
+
+# Notre Vision de la Réussite
+
+La réussite n'est pas un trade gagnant.
+
+La réussite est un système capable de survivre à des milliers de trades.
+
+Nous mesurerons notre succès par :
+
+* la robustesse de nos décisions ;
+* la discipline de notre gestion du risque ;
+* la qualité de notre architecture ;
+* notre capacité d'évolution.
+
+---
+
+# Notre Engagement
+
+Nous nous engageons à ne jamais sacrifier la qualité au profit de la vitesse.
+
+Nous nous engageons à remettre en question nos propres certitudes.
+
+Nous nous engageons à documenter chaque décision importante.
+
+Nous nous engageons à protéger le capital avant de rechercher la performance.
+
+Nous nous engageons à construire une plateforme qui pourra évoluer pendant de nombreuses années.
+
+---
+
+# Notre Devise
+
+> **Observer avec rigueur.
+> Comprendre avec intelligence.
+> Décider avec discipline.
+> Protéger avec humilité.
+> Apprendre sans cesse.**
+
+---
+
+# Signature Fondatrice
+
+TSP-JULES est plus qu'un projet logiciel.
+
+C'est une démarche d'ingénierie appliquée à la décision financière.
+
+Chaque ligne de code devra respecter cette philosophie.
+
+Chaque décision devra renforcer cette vision.
+
+Chaque évolution devra contribuer à construire une plateforme plus intelligente, plus robuste et plus durable que la précédente.
+
+La technologie évoluera.
+
+Les marchés évolueront.
+
+Les modèles évolueront.
+
+Mais les principes fondateurs de TSP-JULES resteront notre référence.
