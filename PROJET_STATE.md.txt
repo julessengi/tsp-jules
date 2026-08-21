@@ -1,19 +1,30 @@
 # PROJECT_STATE
 
 ## Sprint actuel
-Sprint 0
+Sprint 1 - Hardening de la frontière de décision et d'autorisation
 
 ## Module en cours
-Sentinel
+Decision Gate, Risk Authority, Authorization Boundary, Simulation-first policy
 
 ## Dernière tâche terminée
-Architecture C4 validée.
+Architecture baseline, RFC, ADR et règles de gouvernance validées ; hardening de la frontière RiskGuardian -> DecisionBoundary -> Executor mis en place dans le code source.
 
 ## Prochaine tâche
-Connexion WebSocket à l'API Deriv.
+Réaliser la validation runtime complète dans un shell Node/pnpm/Docker fonctionnel et finaliser les tests d'intégration et les dépendances de monorepo.
 
 ## Blocages
-Aucun.
+L'environnement d'exécution fourni ne dispose pas d'un terminal PowerShell/Node/pnpm/Docker fonctionnel. Aucune commande de validation (`pnpm install`, `pnpm test`, `pnpm build`, `docker compose ...`) n'a pu être exécutée dans cette session. La validation runtime reste donc bloquée dans ce runtime.
 
 ## Baseline
-Architecture v1.2
+Architecture v1.2 + Phase 1 scaffold + hardened decision boundary proof
+
+## State
+DOCUMENTED = YES
+DESIGNED = YES
+SCAFFOLDED = YES
+IMPLEMENTED = PARTIAL
+TESTED = PARTIAL (static and adversarial design checks only)
+INTEGRATED = NO
+DEPLOYED = NO
+STATUS = YELLOW
+PHASE_1_READY_FOR_HUMAN_REVIEW = NO

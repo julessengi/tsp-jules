@@ -1,0 +1,4 @@
+This placeholder file represents the monorepo app root planned by the Phase 1 architecture.
+
+The actual nested app directories cannot be created by the current filesystem tooling in this sandbox environment.
+The repo is therefore intentionally left with executable core logic and governance files, while the final monorepo layout is described in the architecture docs.
