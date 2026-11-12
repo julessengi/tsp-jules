@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
-import { describe, expect, it } from 'vitest';
-import { DecisionBoundary, type ExecutionRequest } from './decision-boundary';
+import { resolve } from 'node:path';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { AuthorizedExecution, DecisionBoundary, type ExecutionRequest } from './decision-boundary';
 import { Executor } from './executor';
 import { ProbabilityEngine } from './probability-engine';
 import { RiskApproval, RiskGuardian, type ProbabilityProposal } from './risk-guardian';
@@ -17,28 +18,14 @@ describe('Phase 1 hardening', () => {
     strategyId: 'strategy-1',
   };
 
-  const defaultApproval = RiskApproval.create({
-    approvalId: 'appr-1' as any,
-    decisionId: 'decision-1' as any,
-    proposalId: proposal.proposalId,
-    instrument: proposal.instrument,
-    decision: 'APPROVED',
-    reason: 'Within risk budget',
+  const guardian = new RiskGuardian({
     mode: 'SIMULATION',
-    issuer: 'RiskGuardian',
-    validUntil: new Date(Date.now() + 60_000).toISOString(),
-    correlationId: proposal.correlationId,
-    causationId: proposal.causationId,
-    riskLimits: {
-      riskPerTrade: 1,
-      dailyLossLimit: 2,
-      maxExposure: 3,
-      maxConcurrentTrades: 1,
-    },
+    simulationIsDefault: true,
     killSwitchActive: false,
-    timestamp: new Date().toISOString(),
-    version: '1.0',
+    liveTradingEnabled: false,
   });
+
+  const defaultApproval = guardian.decide(proposal);
 
   const request: ExecutionRequest = {
     proposalId: proposal.proposalId,
@@ -53,90 +40,139 @@ describe('Phase 1 hardening', () => {
     version: '1.0',
   };
 
-  it('approves valid simulation execution', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('approves valid simulation execution through the decision boundary', () => {
     const boundary = new DecisionBoundary('SIMULATION', false);
     const authorization = boundary.authorize(defaultApproval, proposal, request);
     const executor = new Executor('SIMULATION', false);
 
+    expect(AuthorizedExecution.isValid(authorization)).toBe(true);
     expect(executor.execute(authorization).ok).toBe(true);
   });
 
-  it('rejects non-approved decisions', () => {
-    const rejected = RiskApproval.create({
-      ...defaultApproval,
-      approvalId: 'appr-2' as any,
-      decisionId: 'decision-2' as any,
-      proposalId: 'prop-2' as any,
-      decision: 'REJECTED',
-    });
+  it('freezes issued approvals and execution authorizations at runtime', () => {
+    const authorization = new DecisionBoundary().authorize(defaultApproval, proposal, request);
 
-    expect(() => new DecisionBoundary().authorize(rejected, proposal, request)).toThrow();
+    expect(Object.isFrozen(defaultApproval)).toBe(true);
+    expect(Object.isFrozen(defaultApproval.riskLimits)).toBe(true);
+    expect(Object.isFrozen(authorization)).toBe(true);
   });
 
-  it('rejects forged or mismatched authorization', () => {
-    const tampered = RiskApproval.create({
+  it('rejects a forged non-approved risk decision', () => {
+    const forgedRejectedApproval = {
       ...defaultApproval,
-      approvalId: 'appr-3' as any,
-      proposalId: 'prop-3' as any,
-    });
+      decision: 'REJECTED',
+    };
 
-    expect(() => new DecisionBoundary().authorize(tampered, proposal, request)).toThrow();
+    expect(() =>
+      new DecisionBoundary().authorize(forgedRejectedApproval as any, proposal, request),
+    ).toThrow(/invalid or forged RiskApproval/i);
+  });
+
+  it('rejects mismatched approval metadata', () => {
+    const boundary = new DecisionBoundary('SIMULATION', false);
+
+    expect(() =>
+      boundary.authorize(defaultApproval, proposal, {
+        ...request,
+        approvalId: 'wrong-approval-id' as any,
+      }),
+    ).toThrow(/Approval ID mismatch/i);
+  });
+
+  it('rejects caller-supplied untrusted provenance', () => {
+    expect(() =>
+      new DecisionBoundary().authorize(defaultApproval, proposal, {
+        ...request,
+        provenance: 'ExternalCaller' as any,
+      }),
+    ).toThrow(/provenance must be RiskGuardian/i);
   });
 
   it('rejects expired approvals', () => {
-    const expired = RiskApproval.create({
-      ...defaultApproval,
-      approvalId: 'appr-expired' as any,
-      validUntil: new Date(Date.now() - 1000).toISOString(),
-    });
+    vi.useFakeTimers();
 
-    expect(() => new DecisionBoundary().authorize(expired, proposal, request)).toThrow();
+    const freshApproval = guardian.decide(proposal);
+    const freshRequest = {
+      ...request,
+      approvalId: freshApproval.approvalId,
+      decisionId: freshApproval.decisionId,
+      expiration: new Date(Date.now() + 60_000).toISOString(),
+    };
+
+    vi.advanceTimersByTime(60_001);
+
+    expect(() =>
+      new DecisionBoundary().authorize(freshApproval, proposal, freshRequest),
+    ).toThrow(/expired/i);
   });
 
   it('rejects kill switch activation', () => {
     const boundary = new DecisionBoundary('SIMULATION', true);
+
     expect(() => boundary.authorize(defaultApproval, proposal, request)).toThrow(/kill switch/i);
   });
 
   it('rejects live mode when simulation-first is required', () => {
     const liveProposal = { ...proposal, mode: 'LIVE' as const };
-    expect(() => new DecisionBoundary('SIMULATION', false).authorize(defaultApproval, liveProposal, {
-      ...request,
-      mode: 'LIVE',
-    })).toThrow(/simulation/i);
+
+    expect(() =>
+      new DecisionBoundary('SIMULATION', false).authorize(defaultApproval, liveProposal, {
+        ...request,
+        mode: 'LIVE',
+      }),
+    ).toThrow(/simulation/i);
   });
 
   it('Probability Engine does not import Executor directly', () => {
-    const source = readFileSync(new URL('./probability-engine.ts', import.meta.url), 'utf8');
+    const source = readFileSync(resolve(process.cwd(), 'probability-engine.ts'), 'utf8');
+
     expect(source).not.toMatch(/from ['\"]\.\/executor['\"]/);
   });
 
-  it('Executor API requires AuthorizedExecution, not raw proposals', () => {
+  it('Executor API rejects raw proposals at runtime', () => {
     const executor = new Executor('SIMULATION', false);
-    // @ts-expect-error raw probability proposals are rejected by type-level API safety
-    executor.execute({ proposalId: 'prop-raw' });
-    expect(executor).toBeDefined();
+
+    expect(() => executor.execute({ proposalId: 'prop-raw' } as any)).toThrow(
+      /valid AuthorizedExecution token/i,
+    );
   });
 
-  it('Risk Guardian is the sole authorization issuer', () => {
-    const engine = new ProbabilityEngine();
-    const proposalFromEngine = engine.propose({
-      proposalId: 'prop-engine-1' as any,
-      instrument: 'EURUSD',
-      mode: 'SIMULATION',
-      strategyId: 's1',
-      correlationId: 'corr-engine' as any,
-      causationId: 'caus-engine' as any,
-    });
+  it('RiskGuardian is the sole authorization issuer', () => {
+    expect(() => RiskApproval.create(defaultApproval, Symbol())).toThrow(
+      /Only RiskGuardian may issue/i,
+    );
+    expect(RiskApproval.isValid(defaultApproval)).toBe(true);
+  });
 
-    const guardian = new RiskGuardian({
-      mode: 'SIMULATION',
-      simulationIsDefault: true,
+  it('DecisionBoundary is the only authorization gate', () => {
+    expect(() => AuthorizedExecution.fromApproval(defaultApproval, request, Symbol())).toThrow(
+      /Only DecisionBoundary may issue/i,
+    );
+  });
+
+  it('RiskGuardian refuses live proposals and live policy', () => {
+    const liveGuardian = new RiskGuardian({
+      mode: 'LIVE',
+      simulationIsDefault: false,
       killSwitchActive: false,
-      liveTradingEnabled: false,
+      liveTradingEnabled: true,
     });
 
-    const approval = guardian.decide(proposalFromEngine);
-    expect(approval.issuer).toBe('RiskGuardian');
+    expect(() =>
+      liveGuardian.decide({ ...proposal, mode: 'LIVE' }),
+    ).toThrow(/simulation mode/i);
+  });
+
+  it('rejects unbranded authorization objects even if their fields look valid', () => {
+    const executor = new Executor('SIMULATION', false);
+    const forgedAuthorization = { ...defaultApproval, mode: 'SIMULATION' };
+
+    expect(() => executor.execute(forgedAuthorization as any)).toThrow(
+      /valid AuthorizedExecution token/i,
+    );
   });
 });

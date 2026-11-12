@@ -122,8 +122,16 @@ export function validateRiskApproval(
     return { valid: false, reason: 'Kill switch is active; no execution allowed.' };
   }
 
-  if (new Date(approval.validUntil).getTime() <= now.getTime()) {
-    return { valid: false, reason: 'Approval expired.' };
+  const approvalExpiry = Date.parse(approval.validUntil);
+  if (!Number.isFinite(approvalExpiry) || approvalExpiry <= now.getTime()) {
+    return { valid: false, reason: 'Approval expired or has an invalid expiry timestamp.' };
+  }
+
+  if (
+    !approval.riskLimits ||
+    Object.values(approval.riskLimits).some((value) => !Number.isFinite(value) || value < 0)
+  ) {
+    return { valid: false, reason: 'Approval contains invalid risk limits.' };
   }
 
   if (approval.riskLimits.riskPerTrade > config.riskPerTrade) {
@@ -187,10 +195,6 @@ export function executeIfApproved(
 
   if (approval.mode !== 'SIMULATION' || attempt.mode !== 'SIMULATION' || config.mode !== 'SIMULATION') {
     return { allowed: false, status: 'REJECTED', reason: 'This executor is simulation-first only.' };
-  }
-
-  if (config.mode === 'LIVE' && !config.liveTradingEnabled) {
-    return { allowed: false, status: 'REJECTED', reason: 'Live trading is disabled by default.' };
   }
 
   return { allowed: true, status: 'EXECUTED' };

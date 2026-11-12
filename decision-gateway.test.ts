@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createDecisionEnvelope,
   executeIfApproved,
+  type ExecutionAttempt,
   type RiskApproval,
   type RiskGatewayConfig,
 } from './decision-gateway';
@@ -38,7 +39,7 @@ describe('RiskGuard gating', () => {
     ...overrides,
   });
 
-  const buildAttempt = (overrides: Partial<any> = {}) => ({
+  const buildAttempt = (overrides: Partial<ExecutionAttempt> = {}): ExecutionAttempt => ({
     attemptId: 'try-1',
     requestId: 'req-1',
     proposalId: 'prop-1',

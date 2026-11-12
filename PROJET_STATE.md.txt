@@ -1,30 +1,146 @@
-# PROJECT_STATE
+# PROJECT_STATE — TSP-JULES
+
+## Machine de développement
+- Hôte : DESKTOP-QTPL219
+- OS : Windows 10 Professionnel
+- CPU : Intel Core i7-3520M, 2 cœurs / 4 threads
+- RAM : 6 Go (environ 1 Go libre lors du dernier contrôle)
+- Node.js : 24.22.2
+- pnpm : 11.13.1 via Corepack
+- Git : MinGit 2.56.0 portable
+- Docker Desktop : 4.94.0 ; CLI 29.8.2
+- Docker Linux Engine : indisponible
+- WSL / hyperviseur : non opérationnel
+- VirtualizationFirmwareEnabled : False (VT-x désactivé dans BIOS/UEFI)
+
+## Dépôt
+- Remote : https://github.com/julessengi/tsp-jules.git
+- Chemin local : C:\Users\papa\Documents\TSP-JULES
+- Branche de travail : setup/local-machine
+- Commit de base : dff83a1
+- main distante : non modifiée
+- Aucun commit ni push de cette session n'a été effectué.
+- Secrets locaux : .env et .local\bootstrap-credentials.txt ; exclus du suivi Git.
 
 ## Sprint actuel
-Sprint 1 - Hardening de la frontière de décision et d'autorisation
+Sprint 2 — Matérialisation du backend Gate 1 et validation de la fondation applicative Phase 1.
 
-## Module en cours
-Decision Gate, Risk Authority, Authorization Boundary, Simulation-first policy
+## Livrables implémentés
+- Workspace réel apps/backend créé ; anciens fichiers placeholders déplacés dans docs/legacy-*.
+- Backend NestJS 12.4.2 compilable et typé.
+- Prisma 6.19.3 avec schéma PostgreSQL et migration initiale.
+- Modèles : User, RefreshToken, AuditLog ; rôles ADMIN, TRADER, VIEWER.
+- Prisma Client généré localement.
+- Redis 6 client / Redis Server 7 dans Compose ; connexion fail-fast et readiness check.
+- Authentification JWT (15 min par défaut), bcryptjs (12 rounds), refresh tokens aléatoires hachés SHA-256 et rotation à usage unique.
+- Inscription publique désactivée par défaut.
+- Provisionnement des utilisateurs réservé à ADMIN ; liste des utilisateurs et consultation d'audit protégées par RBAC.
+- Audit des connexions, échecs, inscriptions, renouvellements, déconnexions et créations de comptes.
+- Pino HTTP logging structuré avec redaction des mots de passe et tokens.
+- Helmet, DTO validation, CORS allowlist, throttling global et par route.
+- Endpoints liveness et readiness PostgreSQL/Redis.
+- Docker Compose avec PostgreSQL 16, Redis 7 et API NestJS ; ports bindés sur 127.0.0.1.
+- Dockerfile avec OpenSSL et migrations Prisma au démarrage.
+- Workflow GitHub Actions avec services PostgreSQL/Redis, migrations, seed CI, build, typecheck, tests et smoke tests API.
+- Wrapper with-env.cjs pour charger le .env racine sous Windows et en conteneur sans imposer un .env dans l'image.
 
-## Dernière tâche terminée
-Architecture baseline, RFC, ADR et règles de gouvernance validées ; hardening de la frontière RiskGuardian -> DecisionBoundary -> Executor mis en place dans le code source.
+## Validation locale — PASS
+- pnpm install --frozen-lockfile : PASS
+- Prisma schema validate : PASS
+- Prisma Client generate : PASS
+- Backend NestJS build : PASS
+- Backend typecheck : PASS
+- Root build : PASS
+- Root typecheck : PASS
+- Tests complets : 31/31 PASS (14 core hardening + 10 legacy gateway + 4 auth + 3 RBAC)
+- Dependency Cruiser : PASS (38 modules, 47 dépendances, 0 violation)
+- node --check scripts : PASS
+- docker compose config --quiet : PASS
+- .env et .local/bootstrap-credentials.txt : ignorés par Git
 
-## Prochaine tâche
-Réaliser la validation runtime complète dans un shell Node/pnpm/Docker fonctionnel et finaliser les tests d'intégration et les dépendances de monorepo.
+## Non validé / blocages d'exécution
+- Docker Linux Engine ne démarre pas car VT-x est désactivé dans le BIOS/UEFI.
+- Aucun conteneur PostgreSQL, Redis ou API n'a été démarré sur ce poste.
+- La migration Prisma n'a pas encore été appliquée à un serveur PostgreSQL réel.
+- L'API n'a pas encore été démarrée avec les deux services réels.
+- Le smoke test end-to-end (health, login, RBAC ADMIN/VIEWER, rotation, logout) est écrit mais non exécuté localement.
+- Le workflow GitHub Actions est écrit mais n'a pas été exécuté : la branche locale n'a pas été poussée.
+- Les règles de protection de branche GitHub ne sont pas configurées.
+- La journalisation structurée est implémentée ; aucun APM externe ni plateforme de monitoring n'est configuré.
+- Frontend responsive ajouté sous apps/frontend/public ; servi sur la même origine par NestJS, avec login JWT, refresh, vue de santé, administration utilisateurs et journal d'audit.
+- Risk limits de RiskGuardian restent des placeholders ; LIVE trading et connexions broker absents.
 
-## Blocages
-L'environnement d'exécution fourni ne dispose pas d'un terminal PowerShell/Node/pnpm/Docker fonctionnel. Aucune commande de validation (`pnpm install`, `pnpm test`, `pnpm build`, `docker compose ...`) n'a pu être exécutée dans cette session. La validation runtime reste donc bloquée dans ce runtime.
+## Prochaine action opérationnelle
+1. Activer Intel VT-x dans BIOS/UEFI.
+2. Démarrer Docker Desktop Linux Engine.
+3. Depuis le dépôt : docker compose up -d --build.
+4. Provisionner l'administrateur : docker compose exec backend pnpm --filter @tsp-jules/backend db:seed.
+5. Vérifier docker compose ps et exécuter node apps/backend/scripts/smoke.mjs.
+6. Vérifier les journaux et l'état PostgreSQL/Redis.
+7. Après revue du diff, commit et push de setup/local-machine, puis vérifier le workflow GitHub Actions.
+8. Configurer branch protection uniquement après un premier CI vert.
 
-## Baseline
-Architecture v1.2 + Phase 1 scaffold + hardened decision boundary proof
+Ne pas ouvrir la Phase 2 avant validation du Gate 1. Ne jamais activer LIVE trading pendant ce sprint.
 
-## State
+## État
 DOCUMENTED = YES
-DESIGNED = YES
-SCAFFOLDED = YES
-IMPLEMENTED = PARTIAL
-TESTED = PARTIAL (static and adversarial design checks only)
+CORE_IMPLEMENTED = YES
+CORE_TESTED = YES (31/31)
+CORE_BUILT = YES
+NESTJS_BACKEND_IMPLEMENTED = YES
+PRISMA_SCHEMA_VALID = YES
+PRISMA_CLIENT_GENERATED = YES
+AUTHENTICATION_IMPLEMENTED = YES
+RBAC_IMPLEMENTED = YES
+AUDIT_LOGGING_IMPLEMENTED = YES
+STRUCTURED_HTTP_LOGGING_IMPLEMENTED = YES
+REDIS_INTEGRATION_CODE = YES
+DOCKER_COMPOSE_CONFIG = PASS
+LOCAL_POSTGRES_RUNTIME = NOT_RUN
+LOCAL_REDIS_RUNTIME = NOT_RUN
+API_END_TO_END_SMOKE = NOT_RUN
+GITHUB_CI = DEFINED_NOT_EXECUTED
+PLATFORM_RUNTIME = BLOCKED_BY_VIRTUALIZATION
 INTEGRATED = NO
 DEPLOYED = NO
 STATUS = YELLOW
-PHASE_1_READY_FOR_HUMAN_REVIEW = NO
+PHASE_1_GATE_PASSED = NO
+
+
+## Actualisation — 2026-11-12
+
+### Frontend
+- Interface responsive ajoutée dans apps/frontend/public.
+- Authentification JWT, renouvellement de session et déconnexion.
+- Tableau de bord avec état de santé API / PostgreSQL / Redis.
+- Administration des utilisateurs et consultation du journal d'audit pour ADMIN.
+- SVG de marque TSP ajouté ; assets servis par NestJS sur la même origine.
+- Serveur de prévisualisation local Node natif disponible sur le port 4173, avec proxy API vers 3001.
+
+### Vérifications réalisées sur DESKTOP-QTPL219
+- Node.js 24.22.2 ; pnpm 11.13.1 ; Git 2.56.0 ; Docker CLI 29.8.2.
+- Installation pnpm frozen : PASS.
+- Frontend JavaScript + serveur preview : syntaxe PASS.
+- Build noyau et backend : PASS.
+- Typecheck noyau et backend : PASS.
+- Tests noyau : 31/31 PASS.
+- Tests backend : 7/7 PASS.
+- Dependency Cruiser : 0 violation.
+- Prisma schema validate : PASS.
+- Prisma Client generate : PASS.
+- HTTP preview : index, CSS, JS et SVG retournent 200.
+- Proxy API : 503 tant que le backend et ses services ne sont pas démarrés.
+
+### Blocage d'intégration runtime confirmé
+- Intel Core i7-3520M ; VirtualizationFirmwareEnabled=False ; VMMonitorModeExtensions=False.
+- Docker CLI présente, mais aucun moteur Docker Linux accessible.
+- Aucun service PostgreSQL ou Redis local détecté.
+- La migration en base, le seed, le smoke test HTTP complet et le démarrage de l'API restent non exécutés.
+- La prévisualisation frontend est ouverte sur http://127.0.0.1:4173 ; elle affiche l'interface mais la connexion ne peut fonctionner tant que l'API n'est pas disponible.
+- Déploiement public non réalisé ; aucun hôte de production ni secret de déploiement vérifié.
+
+### Git
+- Branche de travail : setup/local-machine (déjà créée).
+- Changements antérieurs staged conservés ; aucun reset ni clean effectué.
+- Commit et push à effectuer après revue finale des changements.
+- LIVE_TRADING reste désactivé ; aucun ordre réel ni connecteur broker ajouté.

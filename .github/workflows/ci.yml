@@ -1,0 +1,125 @@
+name: TSP-JULES Gate 1
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - "setup/**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tsp-jules-gate1-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate1:
+    name: Backend build, database integration and security smoke tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: tsp_jules
+          POSTGRES_USER: tsp_jules
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U tsp_jules -d tsp_jules"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      NODE_ENV: test
+      PORT: 3001
+      DATABASE_URL: postgresql://tsp_jules:ci-only-password@localhost:5432/tsp_jules?schema=public
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET: ci-only-secret-rotate-this-before-deployment-1234567890
+      JWT_ACCESS_TTL: 15m
+      JWT_ISSUER: tsp-jules
+      JWT_AUDIENCE: tsp-jules-api
+      REFRESH_TOKEN_TTL_DAYS: 30
+      ALLOW_PUBLIC_REGISTRATION: "false"
+      BOOTSTRAP_ADMIN_EMAIL: admin@tsp.local
+      BOOTSTRAP_ADMIN_PASSWORD: CI-only-Password-123456789!
+      LOG_LEVEL: warn
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Enable Corepack and activate pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.13.1 --activate
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        run: pnpm db:generate
+
+      - name: Apply database migrations
+        run: pnpm db:migrate:deploy
+
+      - name: Create isolated CI administrator
+        run: pnpm db:seed
+
+      - name: Build core, API and validate frontend JavaScript
+        run: |
+          pnpm run build
+          pnpm run build:api
+          pnpm run check:frontend
+
+      - name: Typecheck core and API
+        run: |
+          pnpm run typecheck
+          pnpm run typecheck:api
+
+      - name: Unit and architecture tests
+        run: |
+          pnpm test
+          pnpm run test:api
+          pnpm run lint
+
+      - name: Start API for integration smoke tests
+        run: |
+          pnpm start:api > backend.log 2>&1 &
+          echo $! > backend.pid
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:3001/api/v1/health/ready; then
+              break
+            fi
+            sleep 2
+          done
+
+      - name: Verify PostgreSQL, Redis, authentication and token rotation
+        run: node apps/backend/scripts/smoke.mjs
+
+      - name: Upload backend logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsp-jules-backend-log
+          path: backend.log
+          if-no-files-found: ignore

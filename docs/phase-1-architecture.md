@@ -1,74 +1,86 @@
-# Phase 1 — Executable architecture foundation
+# Phase 1 â€” Executable architecture foundation
 
-Status: YELLOW — hardening in progress; not ready for Phase 2
+**Status: YELLOW â€” core decision-security foundation validated locally; platform runtime and Gate 1 remain incomplete.**
 
 ## Objective
 
-Convert the repository from a documentation-only baseline into an executable, governance-aligned foundation for TSP-JULES while preserving the documented architecture and risk controls.
+Convert the repository from a documentation-heavy baseline into an executable, governance-aligned foundation for TSP-JULES while preserving the documented architecture and risk controls.
 
-## Architecture chosen
+## Architecture rule
 
-We retain the documented architecture and formalize the risk gating boundary as a distinct authorization step.
+- Probability Engine proposes.
+- Risk Guardian decides.
+- DecisionBoundary validates and issues an AuthorizedExecution token.
+- Executor accepts only a valid AuthorizedExecution token.
+- Direct Probability Engine -> Executor execution is rejected.
+- Simulation mode is mandatory.
+- LIVE trading remains disabled.
 
-Core rule enforced in software:
+## Security boundaries implemented
 
-- Probability Engine proposes
-- Risk Guardian decides
-- DecisionBoundary validates and issues an AuthorizedExecution token
-- Executor executes only after an AuthorizedExecution token is produced by the guarded boundary
-- direct Probability -> Executor is rejected by design and by API contract
-- simulation mode is default
-- no live trading without explicit human approval and verified runtime policy
+### A. Risk authority
 
-### Layered security model
+`RiskApproval` can be issued only through the module-private RiskGuardian capability. Runtime validity is tracked by a private WeakSet; a plain object or copied approval cannot pass validation.
 
-The protection is intentionally multi-layered:
+### B. Decision boundary
 
-A. Type boundary: a `RiskApproval` instance is not a plain object and is created only by a factory.
-B. Module boundary: `ProbabilityEngine` and `Executor` are kept separate at the source-code level.
-C. Dependency boundary: the policy is to prevent direct import and call paths from probability to execution.
-D. Runtime validation: identity, expiry, cycle metadata, issuer, mode, and kill-switch checks are enforced before execution.
-E. Adversarial tests: malformed, forged, expired, replayed, and mismatched approvals are rejected.
-F. Traceability: correlation and causation IDs are required and recorded.
+`AuthorizedExecution` can be issued only by `DecisionBoundary`, using a separate module-private capability. The boundary validates proposal identity, approval identity, instrument, mode, version, issuer, correlation ID, causation ID, expiry and kill-switch state.
 
-Important limitation: the repository contains a stronger design-time boundary than a fully validated runtime deployment, because the environment here does not offer a shell capable of running Node, pnpm, Docker, or Git.
+### C. Executor
 
-## Files created
+The Executor validates the runtime authorization token, simulation mode and expiry. It refuses raw proposals and forged authorization objects. No broker adapter or live order route exists.
 
-- `risk-guardian.ts`
-- `decision-boundary.ts`
-- `executor.ts`
-- `probability-engine.ts`
-- `phase1-hardening.test.ts`
-- `tsconfig.json`
-- `decision-gateway.ts`
-- `decision-gateway.test.ts`
-- `.env.example`
-- `turbo.json`
-- `docs/adr/ADR-011-decision-gating.md`
+### D. Dependency boundary
 
-## Files modified
+Dependency Cruiser enforces the source-level rules separating Probability Engine and Executor. The current scan passed with 10 modules and 10 dependencies, with no violations.
 
-- `package.json`
-- `README.md`
-- `PROJET_STATE.md.txt`
+### E. Adversarial tests
 
-## Risks and constraints
+The test suite covers valid simulation authorization, forged approvals, mismatched metadata, expiry, kill switch, LIVE mode rejection, direct Probability -> Executor imports, raw proposals, forged execution tokens and authority-gate bypass attempts.
 
-- This environment does not expose a usable PowerShell / Node / pnpm / Docker runtime, so runtime verification is limited in this sandbox.
-- The repository still lacks a fully materialized monorepo tree because the filesystem tooling available here cannot create nested directories such as `packages/risk` or `apps/backend`.
-- Therefore, the code is a hardened architectural proof, not a production-validated runtime.
+## Local validation performed
 
-## Validation criteria
+Environment:
+- Windows 10 Professional
+- Node.js 24.22.2
+- pnpm 11.13.1
+- Local branch: `setup/local-machine`
 
-- Type-safe risk gate exists
-- Approvals are refused when decision state is not APPROVED
-- Kill switch blocks execution
-- Simulation mode is the default
-- Event envelopes include correlationId and causationId
-- Probability Engine does not import Executor
-- Executor accepts only AuthorizedExecution tokens
+Results:
+- `pnpm install --frozen-lockfile`: PASS
+- `pnpm test`: 24/24 PASS
+- `pnpm run typecheck`: PASS
+- `pnpm run build`: PASS
+- `pnpm run lint`: PASS (10 modules, 10 dependencies, 0 violations)
+- `docker compose config --quiet`: PASS (syntax validation only)
 
-## Current status
+## Infrastructure limitation
 
-The governance rule is now encoded in a stronger boundary model, but the project remains YELLOW rather than GREEN because runtime execution, dependency-enforcement proof, and Docker validation were not available in this environment.
+Docker Desktop CLI is installed, but its Linux engine cannot connect. CPU virtualization support exists, but Intel VT-x is disabled in BIOS/UEFI; WSL and the Windows hypervisor are not operational on this machine. The Compose file has not been started; PostgreSQL and Redis are not running. The Compose configuration has been hardened to bind published ports to 127.0.0.1 and require PostgreSQL and Redis secrets.
+
+The current repository also lacks:
+- a materialized `apps/backend` application;
+- actual workspace packages under `packages/*`;
+- a NestJS API runtime;
+- a Prisma schema and migrations;
+- PostgreSQL and Redis runtime integration;
+- authentication and user authorization;
+- structured application logging and monitoring;
+- a verified CI/CD run on GitHub and branch-protection rules (a local workflow file has been added but not yet executed remotely);
+- an application dashboard or local web runtime.
+
+The current RiskGuardian limits are placeholders. They are not a production quantitative risk engine.
+
+## Phase 1 Gate Review
+
+**Gate 1 is NOT PASSED.**
+
+The decision-security proof is locally validated, but the Phase 1 platform deliverables in the roadmap are not complete. Do not start Market Data (Phase 2) until the backend, database, cache, secrets, CI/CD, authentication, logging, monitoring and local runtime are implemented and verified.
+
+## Safety status
+
+- LIVE trading: disabled.
+- Broker connections: absent.
+- Real order execution: absent.
+- Simulation-only authorization: enforced.
+- Production readiness: not claimed.

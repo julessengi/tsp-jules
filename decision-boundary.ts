@@ -1,12 +1,12 @@
-import type {
-  ApprovalId,
-  CorrelationId,
-  CausationId,
-  DecisionId,
-  ExecutionMode,
-  ProbabilityProposal,
-  ProposalId,
+import {
   RiskApproval,
+  type ApprovalId,
+  type CorrelationId,
+  type CausationId,
+  type DecisionId,
+  type ExecutionMode,
+  type ProbabilityProposal,
+  type ProposalId,
 } from './risk-guardian';
 
 export interface ExecutionRequest {
@@ -22,11 +22,10 @@ export interface ExecutionRequest {
   version: string;
 }
 
-const authorizedExecutionBrand = Symbol('AuthorizedExecution');
+const decisionBoundaryAuthority = Symbol('DecisionBoundaryAuthority');
+const validAuthorizations = new WeakSet<object>();
 
 export class AuthorizedExecution {
-  private readonly [authorizedExecutionBrand] = true;
-
   private constructor(
     public readonly proposalId: ProposalId,
     public readonly approvalId: ApprovalId,
@@ -40,11 +39,20 @@ export class AuthorizedExecution {
     public readonly provenance: 'RiskGuardian',
   ) {}
 
-  static fromApproval(approval: RiskApproval, request: ExecutionRequest): AuthorizedExecution {
-    if (!(approval instanceof RiskApproval)) {
-      throw new Error('Decision boundary requires a real RiskApproval instance.');
+  /**
+   * Capability-gated factory. Only DecisionBoundary owns the authority token.
+   */
+  static fromApproval(
+    approval: RiskApproval,
+    request: ExecutionRequest,
+    authority: symbol,
+  ): AuthorizedExecution {
+    if (authority !== decisionBoundaryAuthority) {
+      throw new Error('Only DecisionBoundary may issue an AuthorizedExecution token.');
     }
-
+    if (!RiskApproval.isValid(approval)) {
+      throw new Error('Decision boundary requires a valid RiskApproval instance.');
+    }
     if (approval.approvalId !== request.approvalId) {
       throw new Error('Approval ID mismatch.');
     }
@@ -57,14 +65,17 @@ export class AuthorizedExecution {
     if (approval.instrument !== request.instrument) {
       throw new Error('Instrument mismatch.');
     }
-    if (approval.mode !== request.mode) {
-      throw new Error('Execution mode mismatch.');
+    if (approval.mode !== request.mode || request.mode !== 'SIMULATION') {
+      throw new Error('Execution mode mismatch; simulation mode is required.');
     }
     if (approval.issuer !== 'RiskGuardian') {
       throw new Error('Only RiskGuardian can authorize execution.');
     }
     if (approval.decision !== 'APPROVED') {
       throw new Error('RiskGuardian must approve before execution.');
+    }
+    if (approval.killSwitchActive) {
+      throw new Error('Risk approval is blocked by the kill switch.');
     }
     if (!approval.correlationId || !approval.causationId) {
       throw new Error('Missing correlationId or causationId on authorization.');
@@ -75,11 +86,14 @@ export class AuthorizedExecution {
     if (approval.causationId !== request.causationId) {
       throw new Error('Causation ID mismatch.');
     }
-    if (new Date(approval.validUntil).getTime() <= Date.now()) {
-      throw new Error('Authorization expired.');
+
+    const approvalExpiry = Date.parse(approval.validUntil);
+    const requestExpiry = Date.parse(request.expiration);
+    if (!Number.isFinite(approvalExpiry) || approvalExpiry <= Date.now()) {
+      throw new Error('Authorization expired or has an invalid expiry timestamp.');
     }
-    if (new Date(request.expiration).getTime() <= Date.now()) {
-      throw new Error('Execution authorization expired.');
+    if (!Number.isFinite(requestExpiry) || requestExpiry <= Date.now()) {
+      throw new Error('Execution authorization expired or has an invalid expiry timestamp.');
     }
     if (request.provenance !== 'RiskGuardian') {
       throw new Error('Execution provenance is not RiskGuardian.');
@@ -88,7 +102,7 @@ export class AuthorizedExecution {
       throw new Error('Authorization version mismatch.');
     }
 
-    return new AuthorizedExecution(
+    const authorization = new AuthorizedExecution(
       request.proposalId,
       request.approvalId,
       request.decisionId,
@@ -100,6 +114,14 @@ export class AuthorizedExecution {
       request.version,
       'RiskGuardian',
     );
+
+    Object.freeze(authorization);
+    validAuthorizations.add(authorization);
+    return authorization;
+  }
+
+  static isValid(value: unknown): value is AuthorizedExecution {
+    return typeof value === 'object' && value !== null && validAuthorizations.has(value);
   }
 }
 
@@ -117,6 +139,12 @@ export class DecisionBoundary {
     if (this.killSwitchActive) {
       throw new Error('Decision boundary blocked by kill switch.');
     }
+    if (!RiskApproval.isValid(approval)) {
+      throw new Error('Decision boundary rejected an invalid or forged RiskApproval.');
+    }
+    if (approval.killSwitchActive) {
+      throw new Error('Decision boundary blocked by the approval kill-switch flag.');
+    }
     if (proposal.proposalId !== request.proposalId) {
       throw new Error('Proposal ID mismatch between proposal and execution request.');
     }
@@ -126,16 +154,23 @@ export class DecisionBoundary {
     if (proposal.mode !== request.mode) {
       throw new Error('Execution mode mismatch between proposal and execution request.');
     }
-    if (proposal.mode !== 'SIMULATION') {
+    if (proposal.mode !== 'SIMULATION' || this.mode !== 'SIMULATION') {
       throw new Error('Live trading is disabled. Simulation mode is required.');
     }
-    if (this.mode !== 'SIMULATION') {
-      throw new Error('Decision boundary is simulation-first.');
+    if (proposal.version !== request.version) {
+      throw new Error('Proposal version mismatch.');
+    }
+    if (request.provenance !== undefined && request.provenance !== 'RiskGuardian') {
+      throw new Error('Execution provenance must be RiskGuardian.');
     }
 
-    return AuthorizedExecution.fromApproval(approval, {
-      ...request,
-      provenance: 'RiskGuardian',
-    });
+    return AuthorizedExecution.fromApproval(
+      approval,
+      {
+        ...request,
+        provenance: 'RiskGuardian',
+      },
+      decisionBoundaryAuthority,
+    );
   }
 }

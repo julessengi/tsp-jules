@@ -2,31 +2,41 @@
   "name": "tsp-jules",
   "private": true,
   "version": "0.1.0-phase1",
-  "description": "TSP-JULES executable architecture scaffold and governance-aligned platform foundation",
+  "description": "TSP-JULES trading intelligence platform",
   "packageManager": "pnpm@11.13.1",
   "engines": {
     "node": ">=22",
     "pnpm": ">=11"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "dev": "turbo run dev --parallel",
-    "build": "turbo run build",
+    "build": "tsc -p tsconfig.build.json",
+    "build:api": "corepack pnpm --filter @tsp-jules/backend build",
+    "build:workspace": "turbo run build",
     "test": "vitest run",
-    "lint": "turbo run lint",
+    "test:architecture": "vitest run phase1-hardening.test.ts",
+    "test:api": "corepack pnpm --filter @tsp-jules/backend test",
+    "lint": "depcruise --config .dependency-cruiser.js --output-type err-long .",
+    "lint:workspace": "turbo run lint",
     "typecheck": "tsc --noEmit",
-    "clean": "turbo run clean",
-    "format": "turbo run format",
-    "test:architecture": "vitest run phase1-hardening.test.ts"
+    "typecheck:api": "corepack pnpm --filter @tsp-jules/backend typecheck",
+    "check:frontend": "node --check apps/frontend/public/app.js && node --check apps/frontend/dev-server.mjs",
+    "dev:frontend": "node apps/frontend/dev-server.mjs",
+    "dev:api": "corepack pnpm --filter @tsp-jules/backend dev",
+    "start:api": "corepack pnpm --filter @tsp-jules/backend start:prod",
+    "db:generate": "corepack pnpm --filter @tsp-jules/backend prisma:generate",
+    "db:migrate:dev": "corepack pnpm --filter @tsp-jules/backend prisma:migrate:dev",
+    "db:migrate:deploy": "corepack pnpm --filter @tsp-jules/backend prisma:migrate:deploy",
+    "db:seed": "corepack pnpm --filter @tsp-jules/backend db:seed",
+    "dev:workspace": "turbo run dev --parallel",
+    "clean:workspace": "turbo run clean",
+    "format:workspace": "turbo run format"
   },
   "devDependencies": {
-    "@types/node": "^22.10.2",
+    "@types/node": "^22.19.1",
     "dependency-cruiser": "^16.5.0",
     "turbo": "^2.10.5",
-    "typescript": "^5.6.3",
-    "vitest": "^2.1.8"
+    "typescript": "5.9.3",
+    "vitest": "2.1.8"
   }
 }

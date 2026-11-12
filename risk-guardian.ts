@@ -44,11 +44,10 @@ export interface RiskApprovalRecord {
   version: string;
 }
 
-const approvalBrand = Symbol('RiskApproval');
+const riskGuardianAuthority = Symbol('RiskGuardianAuthority');
+const validRiskApprovals = new WeakSet<object>();
 
 export class RiskApproval {
-  private readonly [approvalBrand] = true;
-
   private constructor(
     public readonly approvalId: ApprovalId,
     public readonly decisionId: DecisionId,
@@ -67,20 +66,47 @@ export class RiskApproval {
     public readonly version: string,
   ) {}
 
-  static create(record: RiskApprovalRecord): RiskApproval {
+  /**
+   * Internal capability-gated factory. The authority token is intentionally
+   * module-private; application code must obtain approvals from RiskGuardian.
+   */
+  static create(record: RiskApprovalRecord, authority: symbol): RiskApproval {
+    if (authority !== riskGuardianAuthority) {
+      throw new Error('Only RiskGuardian may issue a RiskApproval.');
+    }
     if (record.issuer !== 'RiskGuardian') {
-      throw new Error('RiskApproval must be issued by RiskGuardian.');
+      throw new Error('RiskApproval issuer must be RiskGuardian.');
     }
     if (record.decision !== 'APPROVED') {
-      throw new Error('Only APPROVED risk decisions can be transformed into an execution authorization.');
+      throw new Error('Only APPROVED risk decisions can create an execution approval.');
     }
-    if (!record.correlationId || !record.causationId) {
-      throw new Error('RiskApproval requires correlationId and causationId.');
+    if (
+      !record.approvalId ||
+      !record.decisionId ||
+      !record.proposalId ||
+      !record.instrument ||
+      !record.correlationId ||
+      !record.causationId
+    ) {
+      throw new Error('RiskApproval is missing mandatory identity or traceability metadata.');
     }
-    if (new Date(record.validUntil).getTime() <= Date.now()) {
-      throw new Error('RiskApproval is expired.');
+
+    const validUntil = Date.parse(record.validUntil);
+    if (!Number.isFinite(validUntil) || validUntil <= Date.now()) {
+      throw new Error('RiskApproval is expired or has an invalid expiry timestamp.');
     }
-    return new RiskApproval(
+
+    const limits = record.riskLimits;
+    if (
+      !limits ||
+      Object.values(limits).some((value) => !Number.isFinite(value) || value < 0) ||
+      !Number.isInteger(limits.maxConcurrentTrades)
+    ) {
+      throw new Error('RiskApproval contains invalid risk limits.');
+    }
+
+    const frozenRiskLimits = Object.freeze({ ...record.riskLimits });
+    const approval = new RiskApproval(
       record.approvalId,
       record.decisionId,
       record.proposalId,
@@ -92,11 +118,19 @@ export class RiskApproval {
       record.validUntil,
       record.correlationId,
       record.causationId,
-      record.riskLimits,
+      frozenRiskLimits,
       record.killSwitchActive,
       record.timestamp,
       record.version,
     );
+
+    Object.freeze(approval);
+    validRiskApprovals.add(approval);
+    return approval;
+  }
+
+  static isValid(value: unknown): value is RiskApproval {
+    return typeof value === 'object' && value !== null && validRiskApprovals.has(value);
   }
 }
 
@@ -116,34 +150,43 @@ export class RiskGuardian {
     if (!proposal || !proposal.proposalId || !proposal.instrument) {
       throw new Error('Probability proposal is incomplete.');
     }
-    if (!this.policy.simulationIsDefault && this.policy.mode === 'LIVE') {
-      throw new Error('Simulation mode is required by default; live trading is disabled.');
-    }
     if (this.policy.killSwitchActive) {
       throw new Error('Kill switch active; RiskGuardian cannot approve trade execution.');
     }
+    if (
+      this.policy.mode !== 'SIMULATION' ||
+      !this.policy.simulationIsDefault ||
+      this.policy.liveTradingEnabled ||
+      proposal.mode !== 'SIMULATION'
+    ) {
+      throw new Error('RiskGuardian only authorizes simulation mode while live trading remains disabled.');
+    }
 
-    return RiskApproval.create({
-      approvalId: `appr-${Date.now()}` as ApprovalId,
-      decisionId: `decision-${Date.now()}` as DecisionId,
-      proposalId: proposal.proposalId,
-      instrument: proposal.instrument,
-      decision: 'APPROVED',
-      reason: 'Proposal was evaluated and approved under the active policy.',
-      mode: proposal.mode,
-      issuer: 'RiskGuardian',
-      validUntil: new Date(Date.now() + 60_000).toISOString(),
-      correlationId: proposal.correlationId,
-      causationId: proposal.causationId,
-      riskLimits: {
-        riskPerTrade: 1,
-        dailyLossLimit: 2,
-        maxExposure: 3,
-        maxConcurrentTrades: 1,
+    return RiskApproval.create(
+      {
+        approvalId: `appr-${Date.now()}` as ApprovalId,
+        decisionId: `decision-${Date.now()}` as DecisionId,
+        proposalId: proposal.proposalId,
+        instrument: proposal.instrument,
+        decision: 'APPROVED',
+        reason: 'Approved under the Phase 1 simulation-only policy.',
+        mode: 'SIMULATION',
+        issuer: RiskGuardian.issuer,
+        validUntil: new Date(Date.now() + 60_000).toISOString(),
+        correlationId: proposal.correlationId,
+        causationId: proposal.causationId,
+        // Phase 1 placeholders only; production limits must come from a validated risk policy.
+        riskLimits: {
+          riskPerTrade: 1,
+          dailyLossLimit: 2,
+          maxExposure: 3,
+          maxConcurrentTrades: 1,
+        },
+        killSwitchActive: false,
+        timestamp: new Date().toISOString(),
+        version: '1.0',
       },
-      killSwitchActive: false,
-      timestamp: new Date().toISOString(),
-      version: '1.0',
-    });
+      riskGuardianAuthority,
+    );
   }
 }

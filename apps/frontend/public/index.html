@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a17">
+  <meta name="description" content="TSP-JULES — Trading Smart Platform, espace privé de pilotage et de contrôle.">
+  <title>TSP-JULES — Espace de pilotage</title>
+  <link rel="icon" href="/assets/tsp-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main id="app">
+    <section id="login-view" class="login-shell">
+      <div class="login-brand">
+        <img src="/assets/tsp-mark.svg" alt="TSP" class="brand-mark">
+        <div><span class="eyebrow">TECHNOLOGY · SKILLS · PERFORMANCE</span><h1>TSP<span>-JULES</span></h1></div>
+      </div>
+      <div class="login-card">
+        <div class="login-intro"><span class="eyebrow">ESPACE PRIVÉ</span><h2>Bienvenue.</h2><p>Connectez-vous pour accéder à votre espace de pilotage.</p></div>
+        <form id="login-form" class="stack">
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username" placeholder="nom@exemple.com" required maxlength="254">
+          <label for="password">Mot de passe</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Votre mot de passe" required minlength="8">
+          <button class="button button-primary" type="submit"><span>Accéder à mon espace</span><span aria-hidden="true">→</span></button>
+          <p id="login-error" class="form-error" role="alert"></p>
+        </form>
+        <div class="login-foot"><span class="status-dot"></span> Connexion sécurisée · Mode simulation</div>
+      </div>
+      <p class="login-note">Plateforme privée. Les inscriptions publiques sont désactivées.</p>
+    </section>
+
+    <section id="workspace" class="workspace hidden">
+      <aside class="sidebar">
+        <a class="sidebar-brand" href="#" data-view="overview"><img src="/assets/tsp-mark.svg" alt=""><span>TSP<span class="brand-dash">-</span>JULES<small>TRADING SMART PLATFORM</small></span></a>
+        <div class="side-label">ESPACE DE TRAVAIL</div>
+        <nav class="nav-list" aria-label="Navigation principale">
+          <button class="nav-item active" data-view="overview"><span class="nav-icon">◫</span>Vue générale</button>
+          <button class="nav-item admin-only" data-view="users"><span class="nav-icon">♙</span>Utilisateurs</button>
+          <button class="nav-item admin-only" data-view="audit"><span class="nav-icon">≋</span>Journal d'audit</button>
+        </nav>
+        <div class="sidebar-bottom"><div class="mode-card"><span class="status-dot"></span><div><b>Mode simulation</b><small>Trading réel désactivé</small></div></div><div class="side-foot">TSP-JULES · PHASE 1</div></div>
+      </aside>
+
+      <section class="main-area">
+        <header class="topbar">
+          <div><span class="eyebrow" id="page-kicker">TABLEAU DE BORD</span><h2 id="page-title">Vue générale</h2></div>
+          <div class="topbar-user"><div class="avatar" id="user-avatar">T</div><div class="user-meta"><b id="user-name">Utilisateur</b><small id="user-role">VIEWER</small></div><button id="logout-button" class="button button-quiet">Déconnexion</button></div>
+        </header>
+
+        <div id="notice" class="notice hidden" role="status"></div>
+        <section id="view-overview" class="view">
+          <div class="welcome-row"><div><span class="eyebrow">CENTRE DE CONTRÔLE</span><h3>Votre activité, <em>en un regard.</em></h3><p>Un point de situation sur les services et la sécurité de votre plateforme.</p></div><div class="date-chip" id="today-date"></div></div>
+          <div class="metric-grid">
+            <article class="metric-card"><div class="metric-head"><span>API BACKEND</span><span class="metric-symbol">⌘</span></div><strong id="api-status" class="metric-value">Vérification…</strong><small id="api-detail">Disponibilité du service</small></article>
+            <article class="metric-card"><div class="metric-head"><span>BASE DE DONNÉES</span><span class="metric-symbol">▤</span></div><strong id="db-status" class="metric-value">En attente</strong><small id="db-detail">PostgreSQL · Prisma</small></article>
+            <article class="metric-card"><div class="metric-head"><span>CACHE & SESSIONS</span><span class="metric-symbol">◈</span></div><strong id="redis-status" class="metric-value">En attente</strong><small id="redis-detail">Redis</small></article>
+            <article class="metric-card"><div class="metric-head"><span>VOTRE PROFIL</span><span class="metric-symbol">♙</span></div><strong id="profile-status" class="metric-value">Actif</strong><small id="profile-detail">Session authentifiée</small></article>
+          </div>
+          <div class="content-grid">
+            <article class="panel panel-wide"><div class="panel-heading"><div><span class="eyebrow">SYSTÈME</span><h3>État des services</h3></div><span id="health-badge" class="pill pill-muted">Contrôle en cours</span></div><div id="service-list" class="service-list"><div class="service-row"><span class="service-led"></span><span>Vérification de la disponibilité…</span></div></div><p class="panel-foot">Les états sont mesurés par les endpoints de santé du backend. Un état indisponible ne signifie pas que les données ont été perdues.</p></article>
+            <article class="panel"><div class="panel-heading"><div><span class="eyebrow">SÉCURITÉ</span><h3>Garde-fous actifs</h3></div><span class="shield">◇</span></div><ul class="security-list"><li><span>✓</span>Authentification JWT</li><li><span>✓</span>Contrôle des rôles</li><li><span>✓</span>Journalisation des accès</li><li><span>✓</span>Inscription publique fermée</li><li><span>✓</span>Mode simulation uniquement</li></ul></article>
+          </div>
+          <div class="disclaimer"><b>Limite opérationnelle</b><p>Cette interface pilote l'accès et l'administration de la plateforme. Elle ne transmet aucun ordre de marché et ne remplace pas une validation des risques ou des données de trading.</p></div>
+        </section>
+
+        <section id="view-users" class="view hidden">
+          <div class="section-intro"><div><span class="eyebrow">ADMINISTRATION</span><h3>Gestion des utilisateurs</h3><p>Créer et consulter les comptes autorisés sur TSP-JULES.</p></div></div>
+          <div class="content-grid users-grid">
+            <article class="panel"><div class="panel-heading"><div><span class="eyebrow">NOUVEAU COMPTE</span><h3>Provisionner un utilisateur</h3></div></div>
+              <form id="user-form" class="stack form-stack">
+                <label for="new-name">Nom complet</label><input id="new-name" name="name" required maxlength="120" placeholder="Nom de l'utilisateur">
+                <label for="new-email">Adresse e-mail</label><input id="new-email" name="email" type="email" required maxlength="254" placeholder="nom@exemple.com">
+                <label for="new-password">Mot de passe temporaire</label><input id="new-password" name="password" type="password" required minlength="12" placeholder="12 caractères minimum">
+                <label for="new-role">Rôle</label><select id="new-role" name="role"><option value="VIEWER">VIEWER — Consultation</option><option value="TRADER">TRADER — Opérations</option><option value="ADMIN">ADMIN — Administration</option></select>
+                <button class="button button-primary" type="submit">Créer le compte <span>→</span></button><p id="user-error" class="form-error" role="alert"></p>
+              </form>
+            </article>
+            <article class="panel panel-wide"><div class="panel-heading"><div><span class="eyebrow">ANNUAIRE</span><h3>Comptes enregistrés</h3></div><button id="refresh-users" class="button button-quiet">Actualiser ↻</button></div><div class="table-wrap"><table><thead><tr><th>Utilisateur</th><th>Rôle</th><th>Statut</th><th>Créé le</th></tr></thead><tbody id="users-body"><tr><td colspan="4" class="empty-cell">Chargement…</td></tr></tbody></table></div></article>
+          </div>
+        </section>
+
+        <section id="view-audit" class="view hidden">
+          <div class="section-intro"><div><span class="eyebrow">TRAÇABILITÉ</span><h3>Journal d'audit</h3><p>Événements de sécurité et actions administratives enregistrés par l'API.</p></div><button id="refresh-audit" class="button button-quiet">Actualiser ↻</button></div>
+          <article class="panel"><div class="table-wrap"><table><thead><tr><th>Date</th><th>Événement</th><th>Cible</th><th>Adresse IP</th></tr></thead><tbody id="audit-body"><tr><td colspan="4" class="empty-cell">Chargement…</td></tr></tbody></table></div></article>
+        </section>
+        <footer class="app-footer"><span>© TSP-JULES · Technology, Skills & Performance</span><span>Conçu pour décider avec méthode.</span></footer>
+      </section>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden" role="status"></div>
+</body>
+</html>
