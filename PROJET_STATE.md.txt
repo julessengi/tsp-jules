@@ -141,6 +141,6 @@ PHASE_1_GATE_PASSED = NO
 
 ### Git
 - Branche de travail : setup/local-machine (déjà créée).
-- Changements antérieurs staged conservés ; aucun reset ni clean effectué.
-- Commit et push à effectuer après revue finale des changements.
+- Les changements staged antérieurement ont été intégrés au commit ; aucun reset ni clean destructif n'a été effectué.
+- Commit `1fba8a0` créé et poussé sur `origin/setup/local-machine` ; branche distante confirmée par `git ls-remote`.
 - LIVE_TRADING reste désactivé ; aucun ordre réel ni connecteur broker ajouté.

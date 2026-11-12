@@ -110,7 +110,7 @@ Validation frontend : `corepack pnpm run check:frontend`. Pour afficher l'interf
 - runs unit and architecture tests;
 - starts the API and tests readiness, login, JWT authentication, ADMIN user provisioning, ADMIN allow / VIEWER deny, refresh rotation and logout.
 
-The workflow has not yet run on GitHub because the local branch has not been pushed. Branch protection is a separate repository setting and has not been enabled.
+The branch `setup/local-machine` has been pushed to GitHub. The resulting GitHub Actions run has not yet been verified from this workstation. Branch protection is a separate repository setting and has not been enabled.
 
 ## Remaining Gate 1 blockers
 
@@ -118,7 +118,7 @@ The workflow has not yet run on GitHub because the local branch has not been pus
 - PostgreSQL and Redis containers have not yet started on this PC.
 - The Prisma migration has not been applied to a live database.
 - End-to-end smoke tests are prepared for CI but have not run against live services.
-- GitHub Actions has not executed the workflow.
+- GitHub Actions execution after the branch push remains to be verified.
 - Branch protection and production secrets are not configured.
 
 The Compose ports bind to localhost only. Do not expose this development stack publicly.
